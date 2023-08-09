@@ -71,7 +71,7 @@ export default function Home() {
                 Platform
               </h2>
               <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal">
-                👋 Welcome to Nixtla's forecasting app, your one-stop 🎯 solution for predicting your time series with precision powered by TimeGPT.
+                👋 Welcome to Nixtla&apos;s forecasting app, your one-stop 🎯 solution for predicting your time series with precision powered by TimeGPT.
               </p>
             </div>
           </motion.div>
