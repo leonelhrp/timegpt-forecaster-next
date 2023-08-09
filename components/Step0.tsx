@@ -1,8 +1,9 @@
 import React from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
-function Step2({
+function Step0({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -20,27 +21,27 @@ function Step2({
       className="max-w-lg mx-auto px-4 lg:px-0"
     >
       <h2 className="text-4xl font-bold text-[#1E2B3A]">
-        Upload Data
+        Nixtla API KEY
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
+        Please enter the Nixtla API KEY to continue.
       </p>
       <div className="flex gap-[15px] justify-end mt-8">
-        <div>
-          <button
-            onClick={() => setStep(1)}
+      <div>
+          <Link
+            href="/"
             className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#f5f7f9] text-[#1E2B3A] no-underline active:scale-95 scale-100 duration-75"
             style={{
               boxShadow: "0 1px 1px #0c192714, 0 1px 3px #0c192724",
             }}
           >
-            Previous step
-          </button>
+            Back to home
+          </Link>
         </div>
         <div>
           <button
             onClick={() => {
-              setStep(3);
+              setStep(1);
             }}
             className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] no-underline flex gap-x-2  active:scale-95 scale-100 duration-75"
             style={{
@@ -57,4 +58,4 @@ function Step2({
   );
 }
 
-export default Step2
+export default Step0

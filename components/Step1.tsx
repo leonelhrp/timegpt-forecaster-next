@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { RadioGroup } from "@headlessui/react";
@@ -106,15 +105,15 @@ function Step1({
       </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
-          <Link
-            href="/"
+          <button
+            onClick={() => setStep(0)}
             className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#f5f7f9] text-[#1E2B3A] no-underline active:scale-95 scale-100 duration-75"
             style={{
               boxShadow: "0 1px 1px #0c192714, 0 1px 3px #0c192724",
             }}
           >
-            Back to home
-          </Link>
+            Previous step
+          </button>
         </div>
         <div>
           <button
@@ -127,26 +126,7 @@ function Step1({
             }}
           >
             <span> Continue </span>
-            <svg
-              className="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              height="100%"
-            >
-              <path
-                d="M13.75 6.75L19.25 12L13.75 17.25"
-                stroke="#FFF"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round" />
-              <path
-                d="M19 12H4.75"
-                stroke="#FFF"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round" />
-            </svg>
+            <Icon.ArrowRight size={20} />
           </button>
         </div>
       </div>
