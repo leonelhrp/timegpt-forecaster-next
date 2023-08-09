@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     },
     {
-      url: "https://timeseries.nixtla.io/generate",
+      url: "https://timeseries.nixtla.io/run-forecast",
       lastModified: new Date(),
     },
   ];

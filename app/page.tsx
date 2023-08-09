@@ -4,44 +4,14 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import * as Icon from "@phosphor-icons/react";
 import LinearChartMotion from "@/components/LinearChartMotion";
+import Logo from "@/components/Logo";
 
 export default function Home() {
   return (
     <AnimatePresence>
       <div className="min-h-[100vh] sm:min-h-screen w-screen flex flex-col relative bg-[#F2F3F5] font-inter overflow-hidden">
         <main className="flex flex-col justify-center h-[90%] static md:fixed w-screen overflow-hidden grid-rows-[1fr_repeat(3,auto)_1fr] z-[100] pt-[30px] pb-[320px] px-4 md:px-20 md:py-0">
-          <motion.svg
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.15,
-              duration: 0.95,
-              ease: [0.165, 0.84, 0.44, 1],
-            }}
-            className="block w-[100px] row-start-2 mb-8 md:mb-6"
-            viewBox="0 0 256.000000 256.000000"
-            preserveAspectRatio="xMidYMid meet"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M104 1905 c-28 -14 -61 -36 -74 -50 l-24 -25 30 -39 c16 -22 127
-              -160 246 -307 l218 -268 -34 -40 c-190 -235 -456 -569 -456 -575 0 -13 44 -48
-              88 -71 91 -48 191 -35 268 33 25 22 108 118 185 213 77 96 144 176 148 178 4
-              3 32 -25 61 -62 227 -284 260 -319 349 -361 47 -22 70 -26 146 -26 77 0 98 4
-              147 27 91 42 122 71 271 256 l140 173 23 -28 c244 -304 311 -378 364 -405 94
-              -47 189 -34 267 36 l44 41 -246 303 c-166 205 -243 307 -237 315 5 7 116 144
-              247 306 l238 295 -43 38 c-39 35 -117 68 -160 68 -9 0 -40 -7 -69 -16 -68 -20
-              -113 -62 -256 -238 -62 -78 -126 -156 -142 -174 l-28 -33 -139 172 c-152 187
-              -206 236 -293 269 -48 18 -73 21 -143 18 -92 -4 -158 -30 -225 -86 -33 -27
-              -52 -50 -222 -259 l-91 -112 -141 172 c-189 233 -189 232 -247 261 -70 35
-              -142 35 -210 1z m1226 -353 c43 -32 281 -332 273 -345 -21 -35 -264 -324 -282
-              -334 -37 -23 -106 -16 -140 13 -32 26 -271 318 -271 330 0 15 260 331 282 341
-              55 27 96 25 138 -5z"
-              fill="#1E2B3A"
-            />
-          </motion.svg>
-
+          <Logo />
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,7 +79,7 @@ export default function Home() {
               }}
             >
               <Link
-                href="/generate"
+                href="/run-forecast"
                 className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#f5f7f9] text-[#1E2B3A] no-underline active:scale-95 scale-100 duration-75"
                 style={{
                   boxShadow: "0 1px 1px #0c192714, 0 1px 3px #0c192724",

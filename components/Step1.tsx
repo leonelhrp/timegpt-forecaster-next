@@ -2,7 +2,7 @@ import React from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { RadioGroup } from "@headlessui/react";
-import { ExogenousQuestionType } from "@/types/generate";
+import { ExogenousQuestionType } from "@/types/run-forecast";
 
 function Step1({
   setStep, selected, setSelected, exogenousQuestions
