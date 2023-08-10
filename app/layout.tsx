@@ -15,7 +15,7 @@ export const metadata: Metadata = {
       `👋 Welcome to Nixtla's forecasting app, your one- stop 🎯 solution for predicting your time series with precision powered by TimeGPT.`,
     images: [
       {
-        url: "https://timeseries.nixtla.io/opengraph-image",
+        url: "https://timegpt-forecaster-next.vercel.app/opengraph-image",
       },
     ],
   },

@@ -1,5 +1,5 @@
-<a href="https://timeseries.nixtla.io">
-  <img alt="Nixtla – Time Series Forecasting App" src="https://timeseries.nixtla.io/opengraph-image">
+<a href="https://timegpt-forecaster-next.vercel.app">
+  <img alt="Nixtla – Time Series Forecasting App" src="https://timegpt-forecaster-next.vercel.app/opengraph-image">
   <h1 align="center">Time Series Forecasting App</h1>
 </a>
 

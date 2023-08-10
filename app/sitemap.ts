@@ -3,11 +3,11 @@ import { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://timeseries.nixtla.io",
+      url: "https://timegpt-forecaster-next.vercel.app",
       lastModified: new Date(),
     },
     {
-      url: "https://timeseries.nixtla.io/run-forecast",
+      url: "https://timegpt-forecaster-next.vercel.app/run-forecast",
       lastModified: new Date(),
     },
   ];
