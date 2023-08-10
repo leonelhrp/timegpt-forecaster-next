@@ -21,9 +21,10 @@
     "eventsource-parser": "^1.0.0",
     "formidable": "^2.1.1",
     "framer-motion": "^10.12.5",
-    "next": "13.4.4",
+    "next": "13.4.13",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "typescript": "5.0.4",
     "uuidv4": "^6.2.13"
   },

@@ -1,12 +1,36 @@
 import React from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import { UploadCSV } from '@/components/UploadCSV';
+import { exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
 
 function Step2({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
+  const onDoneTimeSeriesFile = (file: File) => {
+    console.log(file);
+  };
+
+  const onDoneExogenousFile = (file: File) => {
+    console.log(file);
+  };
+
+  const UploadCSVTimeSeriesProps = {
+    onDone: onDoneTimeSeriesFile,
+    title: timeSeriesUploadTitle,
+    subtitle: timeSeriesUploadSubtitle,
+    exampleLink: timeSeriesUploadExampleLink
+  }
+
+  const UploadCSVExogenousProps = {
+    onDone: onDoneExogenousFile,
+    title: exogenousUploadTitle,
+    subtitle: exogenousUploadSubtitle,
+    exampleLink: exogenousUploadExampleLink
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -25,6 +49,12 @@ function Step2({
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
       </p>
+      <div className="mb-8">
+        <UploadCSV {...UploadCSVTimeSeriesProps} />
+      </div>
+      <div className="mb-8">
+        <UploadCSV {...UploadCSVExogenousProps} />
+      </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
           <button
