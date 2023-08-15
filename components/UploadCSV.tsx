@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { Badge } from "@tremor/react";
 
 type Props = {
   onDone: (file: File) => void;
@@ -11,6 +12,11 @@ type Props = {
 export const UploadCSV: React.FC<Props> = ({ onDone, title, subtitle, exampleLink }) => {
   const [loading, setLoading] = useState(false);
   const [fileWarning, setFileWarning] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const onDropRejected = () => {
+    setFileWarning('Only CSV files are allowed.'); // Aviso para archivos rechazados
+  };
 
   const onDrop = async (acceptedFiles: File[]) => {
     try {
@@ -19,6 +25,7 @@ export const UploadCSV: React.FC<Props> = ({ onDone, title, subtitle, exampleLin
 
       const data = acceptedFiles[0];
 
+      setSelectedFile(data);
       setLoading(false);
       onDone(data);
     } catch (e) {
@@ -26,7 +33,12 @@ export const UploadCSV: React.FC<Props> = ({ onDone, title, subtitle, exampleLin
     }
   }
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop, onDropRejected, accept: {
+      "text/csv": [".csv"]
+    }
+  });
 
   return (
     <div className="flex flex-col">
@@ -68,6 +80,9 @@ export const UploadCSV: React.FC<Props> = ({ onDone, title, subtitle, exampleLin
                     <p className="pl-1">Or drag and drop</p>
                   </div>
                   <p className="text-xs text-gray-500">Limit 200MB per file CSV</p>
+                  {selectedFile && (
+                    <Badge>{selectedFile.name}</Badge>
+                  )}
                 </>
               )}
             </div>
