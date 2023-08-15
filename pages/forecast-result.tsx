@@ -1,17 +1,13 @@
 import LineChartResult from "@/components/LineChartResult";
-import { AnimatePresence, motion } from "framer-motion";
+import LineChartResultTabs from "@/components/LineChartResultTabs";
 
 export default function ForecastResultPage() {
   return (
-    <AnimatePresence>
-      (
-      <div className="flex flex-col md:flex-row w-full md:overflow-hidden">
-        <div className="w-full md:h-screen flex flex-col px-4 bg-[#FCFCFC] justify-center">
-          <div className="h-full w-full items-center justify-center flex flex-col">
-            <LineChartResult />
-          </div>
-        </div>
+    <div className="flex flex-col items-center justify-start bg-[#FCFCFC] px-4 py-8 md:overflow-auto">
+      <div className="flex flex-col w-full max-w-screen-xl space-y-8 mb-8">
+        <LineChartResult />
+        <LineChartResultTabs />
       </div>
-    </AnimatePresence>
+    </div>
   );
 }
