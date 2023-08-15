@@ -15,7 +15,7 @@ import { startOfYear, subDays } from "date-fns";
 
 export interface Result {
   Date: string;
-  Prediction: number;
+  Price: number;
 }
 
 function generateForecastData(): Result[] {
