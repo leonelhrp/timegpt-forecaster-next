@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import Dropdown from "@/components/Dropdown";
+import NumberInput from "@/components/NumberInput";
+import { frequencies } from "@/utils/consts";
 
 function Step3({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
+
+  const [frecuency, setFrecuency] = useState<string>("B");
+  const [horizon, setHorizon] = useState<number>(11);
+
+  const FRECUENCY_LABEL = <p>
+    Define the frequency of your data (see&nbsp;
+    <a
+      className="text-blue-500 hover:underline"
+      href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases"
+      target="_blank" rel="noopener noreferrer">
+      pandas' available frequencies
+    </a>)
+  </p>
+
+  const HORIZON_LABEL = <p>Define forecast horizon (in number of timestamps you want to predict)</p>
+
+  const handleChangeFrecuency = (value: string) => {
+    console.log(value);
+    setFrecuency(value);
+  };
+
+  const handleChangeHorizon = (value: string) => {
+    setHorizon(Number(value));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -25,6 +53,20 @@ function Step3({
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
       </p>
+      <div className="mt-8">
+        <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col gap-y-2">
+            <Dropdown
+              data={frequencies}
+              selectedKey={frecuency}
+              onValueSelect={handleChangeFrecuency}
+              label={FRECUENCY_LABEL}
+              showValue={true}
+            />
+          </div>
+          <NumberInput value={horizon} onChange={handleChangeHorizon} placeholder="Digitar monto de descuento" />
+        </div>
+      </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
           <button
