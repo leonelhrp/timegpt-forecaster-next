@@ -1,36 +1,30 @@
-import React from "react";
+import React, { useId, useState } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { UploadCSV } from '@/components/UploadCSV';
-import { exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
+import { NumberInput, Select, SelectItem } from "@tremor/react";
+import { FRECUENCIES } from "@/utils/consts";
 
-function Step2({
+function Step3({
   setStep,
+  frecuency,
+  setFrecuency,
+  horizon,
+  setHorizon,
+  finetuneSteps,
+  setFinetuneSteps,
+  predictionIntervals,
+  setPredictionIntervals
 }: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
+    setStep: React.Dispatch<React.SetStateAction<number>>;
+    frecuency: string;
+    setFrecuency: React.Dispatch<React.SetStateAction<string>>;
+    horizon: number;
+    setHorizon: React.Dispatch<React.SetStateAction<number>>;
+    finetuneSteps: number;
+    setFinetuneSteps: React.Dispatch<React.SetStateAction<number>>;
+    predictionIntervals: number;
+    setPredictionIntervals: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
-  const onDoneTimeSeriesFile = (file: File) => {
-    console.log(file);
-  };
-
-  const onDoneExogenousFile = (file: File) => {
-    console.log(file);
-  };
-
-  const UploadCSVTimeSeriesProps = {
-    onDone: onDoneTimeSeriesFile,
-    title: timeSeriesUploadTitle,
-    subtitle: timeSeriesUploadSubtitle,
-    exampleLink: timeSeriesUploadExampleLink
-  }
-
-  const UploadCSVExogenousProps = {
-    onDone: onDoneExogenousFile,
-    title: exogenousUploadTitle,
-    subtitle: exogenousUploadSubtitle,
-    exampleLink: exogenousUploadExampleLink
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -44,16 +38,63 @@ function Step2({
       className="max-w-lg mx-auto px-4 lg:px-0"
     >
       <h2 className="text-4xl font-bold text-[#1E2B3A]">
-        Upload Data
+        Forecasting parameters
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
       </p>
-      <div className="mb-8">
-        <UploadCSV {...UploadCSVTimeSeriesProps} />
-      </div>
-      <div className="mb-8">
-        <UploadCSV {...UploadCSVExogenousProps} />
+      <div className="mt-8">
+        <div className="flex flex-col gap-y-4">
+
+          <div className="flex gap-x-4">
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define the frequency of your data (see&nbsp;
+                <a
+                  className="text-blue-500 hover:underline"
+                  href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases"
+                  target="_blank" rel="noopener noreferrer">
+                  pandas' available frequencies
+                </a>)
+              </label>
+              <Select value={frecuency} onValueChange={setFrecuency}>
+                {FRECUENCIES.map(frecuency => (
+                  <SelectItem key={useId()} value={frecuency.key}>
+                    {frecuency.key} - {frecuency.value}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+
+            {/* Horizon Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define forecast horizon (in number of timestamps you want to predict)
+              </label>
+              <NumberInput value={horizon} onValueChange={setHorizon} />
+            </div>
+          </div>
+
+          <div className="flex gap-x-4">
+            {/* FinetuneSteps Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define finetune steps (use zero for zero-shot inference, which is faster)
+              </label>
+              <NumberInput value={finetuneSteps} onValueChange={setFinetuneSteps} />
+            </div>
+
+            {/* PredictionIntervals Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define level for prediction intervals (uncertainty estimation)
+              </label>
+              <NumberInput value={predictionIntervals} onValueChange={setPredictionIntervals} />
+            </div>
+          </div>
+
+        </div>
+
       </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
@@ -87,4 +128,4 @@ function Step2({
   );
 }
 
-export default Step2
+export default Step3

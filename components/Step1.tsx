@@ -3,19 +3,44 @@ import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { RadioGroup } from "@headlessui/react";
 import { ExogenousQuestionType } from "@/types/run-forecast";
+import { UploadCSV } from '@/components/UploadCSV';
+import { exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
 
 function Step1({
   setStep, selected, setSelected, exogenousQuestions
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  selected: ExogenousQuestionType;
-  setSelected: React.Dispatch<React.SetStateAction<ExogenousQuestionType>>;
+  selected: ExogenousQuestionType | null;
+  setSelected: React.Dispatch<React.SetStateAction<ExogenousQuestionType | null>>;
   exogenousQuestions: Array<ExogenousQuestionType>;
 }): React.JSX.Element {
-
-  function classNames(...classes: string[]) {
+  const classNames = (...classes: string[]) => {
     return classes.filter(Boolean).join(" ");
   }
+
+  const onDoneTimeSeriesFile = (file: File) => {
+    console.log(file);
+  };
+
+  const onDoneExogenousFile = (file: File) => {
+    console.log(file);
+  };
+
+  const UploadCSVTimeSeriesProps = {
+    onDone: onDoneTimeSeriesFile,
+    title: timeSeriesUploadTitle,
+    subtitle: timeSeriesUploadSubtitle,
+    exampleLink: timeSeriesUploadExampleLink
+  }
+
+  const UploadCSVExogenousProps = {
+    onDone: onDoneExogenousFile,
+    title: exogenousUploadTitle,
+    subtitle: exogenousUploadSubtitle,
+    exampleLink: exogenousUploadExampleLink
+  }
+
+  const shouldDisplayExogenousUpload = selected?.value;
 
   return (
     <motion.div
@@ -30,78 +55,93 @@ function Step1({
       className="max-w-lg mx-auto px-4 lg:px-0"
     >
       <h2 className="text-4xl font-bold text-[#1E2B3A]">
-        Do you have exogenous data?
+        Upload Data
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae cupiditate quidem deleniti, minima debitis ipsam rem culpa voluptas neque blanditiis dolor rerum itaque saepe ipsum eligendi quam eveniet. Quibusdam, molestiae?
       </p>
       <div>
-        <RadioGroup value={selected} onChange={setSelected}>
-          <RadioGroup.Label className="sr-only">
-            Exogenous data question
-          </RadioGroup.Label>
-          <div className="space-y-4">
-            {exogenousQuestions.map((question) => (
-              <RadioGroup.Option
-                key={question.id}
-                value={question}
-                className={({ checked, active }) => classNames(
-                  checked
-                    ? "border-transparent"
-                    : "border-gray-300",
-                  active
-                    ? "border-blue-500 ring-2 ring-blue-200"
-                    : "",
-                  "relative cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none flex justify-between"
-                )}
-              >
-                {({ active, checked }) => (
-                  <>
-                    <span className="flex items-center">
-                      <span className="flex flex-col text-sm">
-                        <RadioGroup.Label
-                          as="span"
-                          className="font-medium text-gray-900"
-                        >
-                          {question.name}
-                        </RadioGroup.Label>
+        {selected ? (
+          <>
+            <div className="mb-8">
+              <UploadCSV {...UploadCSVTimeSeriesProps} />
+            </div>
+            {shouldDisplayExogenousUpload && (
+              <div className="mb-8">
+                <UploadCSV {...UploadCSVExogenousProps} />
+              </div>
+            )}
+          </>
+        ) : (
+          <div>
+            <RadioGroup value={selected} onChange={setSelected}>
+              <RadioGroup.Label className="sr-only">
+                Exogenous data question
+              </RadioGroup.Label>
+              <div className="space-y-4">
+                {exogenousQuestions.map((question) => (
+                  <RadioGroup.Option
+                    key={question.id}
+                    value={question}
+                    className={({ checked, active }) => classNames(
+                      checked
+                        ? "border-transparent"
+                        : "border-gray-300",
+                      active
+                        ? "border-blue-500 ring-2 ring-blue-200"
+                        : "",
+                      "relative cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none flex justify-between"
+                    )}
+                  >
+                    {({ active, checked }) => (
+                      <>
+                        <span className="flex items-center">
+                          <span className="flex flex-col text-sm">
+                            <RadioGroup.Label
+                              as="span"
+                              className="font-medium text-gray-900"
+                            >
+                              {question.name}
+                            </RadioGroup.Label>
+                            <RadioGroup.Description
+                              as="span"
+                              className="text-gray-500"
+                            >
+                              <span className="block">
+                                {question.description}
+                              </span>
+                            </RadioGroup.Description>
+                          </span>
+                        </span>
                         <RadioGroup.Description
                           as="span"
-                          className="text-gray-500"
+                          className="flex text-sm ml-4 mt-0 flex-col text-right items-center justify-center"
                         >
-                          <span className="block">
-                            {question.description}
+                          <span className=" text-gray-500">
+                            {question.value ? (
+                              <Icon.CloudRain size="32px" />
+                            ) : (
+                              <Icon.LineSegments size="32px" />
+                            )}
                           </span>
                         </RadioGroup.Description>
-                      </span>
-                    </span>
-                    <RadioGroup.Description
-                      as="span"
-                      className="flex text-sm ml-4 mt-0 flex-col text-right items-center justify-center"
-                    >
-                      <span className=" text-gray-500">
-                        {question.value ? (
-                          <Icon.CloudRain size="32px" />
-                        ) : (
-                          <Icon.LineSegments size="32px" />
-                        )}
-                      </span>
-                    </RadioGroup.Description>
-                    <span
-                      className={classNames(
-                        active ? "border" : "border-2",
-                        checked
-                          ? "border-blue-500"
-                          : "border-transparent",
-                        "pointer-events-none absolute -inset-px rounded-lg"
-                      )}
-                      aria-hidden="true" />
-                  </>
-                )}
-              </RadioGroup.Option>
-            ))}
+                        <span
+                          className={classNames(
+                            active ? "border" : "border-2",
+                            checked
+                              ? "border-blue-500"
+                              : "border-transparent",
+                            "pointer-events-none absolute -inset-px rounded-lg"
+                          )}
+                          aria-hidden="true" />
+                      </>
+                    )}
+                  </RadioGroup.Option>
+                ))}
+              </div>
+            </RadioGroup>
           </div>
-        </RadioGroup>
+        )}
       </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
