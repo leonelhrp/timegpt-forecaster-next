@@ -1,10 +1,10 @@
-import React, { useId, useState } from "react";
+import React, { useId } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { NumberInput, Select, SelectItem } from "@tremor/react";
 import { FRECUENCIES } from "@/utils/consts";
 
-function Step3({
+function Step2({
   setStep,
   frecuency,
   setFrecuency,
@@ -24,7 +24,9 @@ function Step3({
     setFinetuneSteps: React.Dispatch<React.SetStateAction<number>>;
     predictionIntervals: number;
     setPredictionIntervals: React.Dispatch<React.SetStateAction<number>>;
-}): React.JSX.Element {
+  }): React.JSX.Element {
+  const itemId = useId();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -54,12 +56,12 @@ function Step3({
                   className="text-blue-500 hover:underline"
                   href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases"
                   target="_blank" rel="noopener noreferrer">
-                  pandas' available frequencies
+                  pandas&apos; available frequencies
                 </a>)
               </label>
               <Select value={frecuency} onValueChange={setFrecuency}>
                 {FRECUENCIES.map(frecuency => (
-                  <SelectItem key={useId()} value={frecuency.key}>
+                  <SelectItem key={itemId} value={frecuency.key}>
                     {frecuency.key} - {frecuency.value}
                   </SelectItem>
                 ))}
@@ -128,4 +130,4 @@ function Step3({
   );
 }
 
-export default Step3
+export default Step2

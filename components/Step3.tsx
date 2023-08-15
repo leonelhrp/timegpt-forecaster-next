@@ -5,12 +5,13 @@ import { motion } from "framer-motion";
 import { Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
 import { COUNTRIES } from "@/utils/consts";
 
-function Step4({
+function Step3({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   }): React.JSX.Element {
   const router = useRouter();
+  const itemId = useId();
 
   const [defaultCalendarVar, setDefaultCalendarVar] = useState<string>('True');
   const [countryHolidays, setCountryHolidays] = useState<Array<string>>([]);
@@ -61,7 +62,7 @@ function Step4({
               </label>
               <MultiSelect value={countryHolidays} onValueChange={setCountryHolidays}>
                 {COUNTRIES.map(country => (
-                  <MultiSelectItem key={useId()} value={country.code}>
+                  <MultiSelectItem key={itemId} value={country.code}>
                     {country.name}
                   </MultiSelectItem>
                 ))}
@@ -101,4 +102,4 @@ function Step4({
   );
 }
 
-export default Step4
+export default Step3
