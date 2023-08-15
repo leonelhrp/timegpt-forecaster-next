@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import Link from "next/link";
 
 function Step0({
@@ -48,7 +47,7 @@ function Step0({
   };
 
   useEffect(() => {
-    setApiKey(storedApiKey);
+    setApiKey(storedApiKey || '');
     setEditing(!storedApiKey);
   }, [storedApiKey]);
 
