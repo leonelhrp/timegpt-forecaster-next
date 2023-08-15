@@ -31,7 +31,7 @@ export default function GeneratePage() {
   const [selected, setSelected] = useState<ExogenousQuestionType>(
     exogenousQuestions[0]
   );
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(4);
   const [loading, setLoading] = useState<boolean>(true);
   const [isSubmitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState("Processing");

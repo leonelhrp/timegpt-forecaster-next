@@ -1,39 +1,18 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import Dropdown from "@/components/Dropdown";
-import NumberInput from "@/components/NumberInput";
-import { frequencies } from "@/utils/consts";
+import { NumberInput, Select, SelectItem } from "@tremor/react";
+import { FRECUENCIES } from "@/utils/consts";
 
 function Step3({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
-
   const [frecuency, setFrecuency] = useState<string>("B");
   const [horizon, setHorizon] = useState<number>(11);
-
-  const FRECUENCY_LABEL = <p>
-    Define the frequency of your data (see&nbsp;
-    <a
-      className="text-blue-500 hover:underline"
-      href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases"
-      target="_blank" rel="noopener noreferrer">
-      pandas' available frequencies
-    </a>)
-  </p>
-
-  const HORIZON_LABEL = <p>Define forecast horizon (in number of timestamps you want to predict)</p>
-
-  const handleChangeFrecuency = (value: string) => {
-    console.log(value);
-    setFrecuency(value);
-  };
-
-  const handleChangeHorizon = (value: string) => {
-    setHorizon(Number(value));
-  };
+  const [finetuneSteps, setFinetuneSteps] = useState<number>(0);
+  const [predictionIntervals, setPredictionIntervals] = useState<number>(90);
 
   return (
     <motion.div
@@ -55,17 +34,57 @@ function Step3({
       </p>
       <div className="mt-8">
         <div className="flex flex-col gap-y-4">
-          <div className="flex flex-col gap-y-2">
-            <Dropdown
-              data={frequencies}
-              selectedKey={frecuency}
-              onValueSelect={handleChangeFrecuency}
-              label={FRECUENCY_LABEL}
-              showValue={true}
-            />
+
+          <div className="flex gap-x-4">
+            {/* Frecuency Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define the frequency of your data (see&nbsp;
+                <a
+                  className="text-blue-500 hover:underline"
+                  href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases"
+                  target="_blank" rel="noopener noreferrer">
+                  pandas' available frequencies
+                </a>)
+              </label>
+              <Select value={frecuency} onValueChange={setFrecuency}>
+                {FRECUENCIES.map(frecuency => (
+                  <SelectItem key={useId()} value={frecuency.key}>
+                    {frecuency.key} - {frecuency.value}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+
+            {/* Horizon Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define forecast horizon (in number of timestamps you want to predict)
+              </label>
+              <NumberInput value={horizon} onValueChange={setHorizon} />
+            </div>
           </div>
-          <NumberInput value={horizon} onChange={handleChangeHorizon} placeholder="Digitar monto de descuento" />
+
+          <div className="flex gap-x-4">
+            {/* FinetuneSteps Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define finetune steps (use zero for zero-shot inference, which is faster)
+              </label>
+              <NumberInput value={finetuneSteps} onValueChange={setFinetuneSteps} />
+            </div>
+
+            {/* PredictionIntervals Input */}
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Define level for prediction intervals (uncertainty estimation)
+              </label>
+              <NumberInput value={predictionIntervals} onValueChange={setPredictionIntervals} />
+            </div>
+          </div>
+
         </div>
+
       </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>

@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState, useId } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import { Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
+import { COUNTRIES } from "@/utils/consts";
 
 function Step4({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
+  const [defaultCalendarVar, setDefaultCalendarVar] = useState<string>('True');
+  const [countryHolidays, setCountryHolidays] = useState<Array<string>>([]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -25,6 +30,40 @@ function Step4({
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
       </p>
+      <div className="mt-8">
+        <div className="flex flex-col gap-y-4">
+
+          <div className="flex gap-x-4">
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Add default calendar variables
+              </label>
+              <Select value={defaultCalendarVar} onValueChange={setDefaultCalendarVar}>
+                <SelectItem key={'True'} value={'True'}>
+                  True
+                </SelectItem>
+                <SelectItem key={'False'} value={'False'}>
+                  False
+                </SelectItem>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-y-2 w-1/2">
+              <label className="block text-sm leading-5 font-medium text-gray-700">
+                Add default calendar variables
+              </label>
+              <MultiSelect value={countryHolidays} onValueChange={setCountryHolidays}>
+                {COUNTRIES.map(country => (
+                  <MultiSelectItem key={useId()} value={country.code}>
+                    {country.name}
+                  </MultiSelectItem>
+                ))}
+              </MultiSelect>
+            </div>
+          </div>
+        </div>
+
+      </div>
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
           <button
