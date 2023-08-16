@@ -28,7 +28,7 @@ export default async function OG() {
       >
         <img
           src={new URL(
-            "../public/ad41174-Nixtla_White.svg",
+            "../public/images/logo-nixtla-black.png",
             import.meta.url
           ).toString()}
           alt="Nixtla Logo"

@@ -75,8 +75,8 @@ function Step1({
         ) : (
           <div>
             <RadioGroup value={selected} onChange={setSelected}>
-              <RadioGroup.Label className="sr-only">
-                Exogenous data question
+              <RadioGroup.Label >
+                Do you have exogenous data?
               </RadioGroup.Label>
               <div className="space-y-4">
                 {exogenousQuestions.map((question) => (
