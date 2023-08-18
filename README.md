@@ -19,8 +19,16 @@ Nixtla's forecasting app, your one-stop 🎯 solution for predicting your time s
 
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development
 - [Framer Motion](https://framer.com/motion) – Motion library for React to animate components with ease
-- [`ImageResponse`](https://beta.nextjs.org/docs/api-reference/image-response) – Generate dynamic Open Graph images at the edge
 - [HeadlessUI](https://headlessui.com/) - Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS
+
+### Data Processing and Visualization
+
+- [Danfo.js](https://danfo.jsdata.org) – A powerful library for data manipulation and analysis in JavaScript
+- [Plotly](https://plotly.com) – An interactive graphing library for creating visualizations in JavaScript
+
+### State Management
+
+- [Zustand](https://zustand-demo.pmnd.rs) – A small, fast and scaleable bearbones state-management solution for React
 
 ### Code Quality
 
