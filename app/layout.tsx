@@ -1,6 +1,7 @@
+import { Metadata } from "next";
+import { Analytics } from '@vercel/analytics/react';
 import { Layout } from "@/components/Layout";
 import "../styles/globals.css";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
@@ -36,6 +37,7 @@ export default async function RootLayout({
         <div className="flex w-full">
           <Layout>{children}</Layout>
         </div>
+        <Analytics />
       </body>
     </html>
   );

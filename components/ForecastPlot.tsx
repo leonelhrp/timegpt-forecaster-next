@@ -1,11 +1,7 @@
-import dynamic from "next/dynamic"
-import { datesToDataframe } from "@/utils/forecast"
+import Plot from 'react-plotly.js';
 import moment from "moment";
 import * as dfd from 'danfojs';
-
-const Plot = dynamic(import('react-plotly.js'), {
-  ssr: false
-})
+import { datesToDataframe } from "@/utils/forecast"
 
 interface ForecastPlotProps {
   data: any;  // you can type this more strictly later
