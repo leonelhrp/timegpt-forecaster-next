@@ -1,8 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import { ExogenousQuestionType } from "@/types/forecast";
+import { useState } from "react";
 import Step0 from "@/components/Step0";
 import Step1 from "@/components/Step1";
 import Step2 from "@/components/Step2";
@@ -11,48 +10,9 @@ import InfoStep0 from "@/components/InfoStep0";
 import InfoStep1 from "@/components/InfoStep1";
 import InfoStep2 from "@/components/InfoStep2";
 import InfoStep3 from "@/components/InfoStep3";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import { useForecastStore } from "@/store/useForecastStore";
-
-const exogenousQuestions = [
-  {
-    id: 1,
-    name: "Yes, I have a exogenous data",
-    description: "Lorem ipsum dolor sit amet",
-    value: true,
-  },
-  {
-    id: 2,
-    name: "No, I don't have a exogenous data",
-    description: "Lorem ipsum dolor sit amet",
-    value: false,
-  },
-];
 
 export default function RunForecastPage() {
-  const [selected, setSelected] = useState<ExogenousQuestionType | null>(null);
-  const [step, setStep] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isSubmitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState("Processing");
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [completed, setCompleted] = useState(false);
-
-  // Nixtla API key
-  const [storedApiKey, setStoredApiKey] = useLocalStorage<string>('apiKey', '');
-  const [apiKey, setApiKey] = useState<string>(storedApiKey ?? '');
-
-  // Forecasting parameters
-  const [frecuency, setFrecuency] = useState<string>("B");
-  const [horizon, setHorizon] = useState<number>(11);
-  const [finetuneSteps, setFinetuneSteps] = useState<number>(0);
-  const [predictionIntervals, setPredictionIntervals] = useState<number>(90);
-
-  useEffect(() => {
-    setIsDesktop(window.innerWidth >= 768);
-  }, []);
+  const [step, setStep] = useState<number>(3);
 
   return (
     <AnimatePresence>
@@ -70,31 +30,16 @@ export default function RunForecastPage() {
             {step === 0 && (
               <Step0
                 setStep={setStep}
-                storedApiKey={storedApiKey}
-                setStoredApiKey={setStoredApiKey}
-                apiKey={apiKey}
-                setApiKey={setApiKey}
               />
             )}
             {step === 1 && (
               <Step1
                 setStep={setStep}
-                selected={selected}
-                setSelected={setSelected}
-                exogenousQuestions={exogenousQuestions}
               />
             )}
             {step === 2 && (
               <Step2
                 setStep={setStep}
-                frecuency={frecuency}
-                setFrecuency={setFrecuency}
-                horizon={horizon}
-                setHorizon={setHorizon}
-                finetuneSteps={finetuneSteps}
-                setFinetuneSteps={setFinetuneSteps}
-                predictionIntervals={predictionIntervals}
-                setPredictionIntervals={setPredictionIntervals}
               />
             )}
             {step === 3 && (

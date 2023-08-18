@@ -3,29 +3,31 @@ import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { NumberInput, Select, SelectItem } from "@tremor/react";
 import { FRECUENCIES } from "@/utils/consts";
+import { useForecastStore } from "@/store/useForecastStore";
 
 function Step2({
   setStep,
-  frecuency,
-  setFrecuency,
-  horizon,
-  setHorizon,
-  finetuneSteps,
-  setFinetuneSteps,
-  predictionIntervals,
-  setPredictionIntervals
 }: {
     setStep: React.Dispatch<React.SetStateAction<number>>;
-    frecuency: string;
-    setFrecuency: React.Dispatch<React.SetStateAction<string>>;
-    horizon: number;
-    setHorizon: React.Dispatch<React.SetStateAction<number>>;
-    finetuneSteps: number;
-    setFinetuneSteps: React.Dispatch<React.SetStateAction<number>>;
-    predictionIntervals: number;
-    setPredictionIntervals: React.Dispatch<React.SetStateAction<number>>;
   }): React.JSX.Element {
+  const { form, setPropertyForm } = useForecastStore()
   const itemId = useId();
+
+  const handleFrecuencyChange = (value: string) => {
+    setPropertyForm({ key: 'frecuency', value })
+  }
+
+  const handleHorizonChange = (value: number) => {
+    setPropertyForm({ key: 'horizon', value })
+  }
+
+  const handleFinetuneStepsChange = (value: number) => {
+    setPropertyForm({ key: 'finetuneSteps', value })
+  }
+
+  const handlePredictionIntervalsChange = (value: number) => {
+    setPropertyForm({ key: 'predictionIntervals', value })
+  }
 
   return (
     <motion.div
@@ -59,10 +61,10 @@ function Step2({
                   pandas&apos; available frequencies
                 </a>)
               </label>
-              <Select value={frecuency} onValueChange={setFrecuency}>
-                {FRECUENCIES.map(frecuency => (
-                  <SelectItem key={itemId} value={frecuency.key}>
-                    {frecuency.key} - {frecuency.value}
+              <Select value={form.frecuency} onValueChange={handleFrecuencyChange}>
+                {FRECUENCIES.map(item => (
+                  <SelectItem key={itemId} value={item.key}>
+                    {item.key} - {item.value}
                   </SelectItem>
                 ))}
               </Select>
@@ -73,7 +75,7 @@ function Step2({
               <label className="block text-sm leading-5 font-medium text-gray-700">
                 Define forecast horizon (in number of timestamps you want to predict)
               </label>
-              <NumberInput value={horizon} onValueChange={setHorizon} />
+              <NumberInput value={form.horizon} onValueChange={handleHorizonChange} />
             </div>
           </div>
 
@@ -83,7 +85,7 @@ function Step2({
               <label className="block text-sm leading-5 font-medium text-gray-700">
                 Define finetune steps (use zero for zero-shot inference, which is faster)
               </label>
-              <NumberInput value={finetuneSteps} onValueChange={setFinetuneSteps} />
+              <NumberInput value={form.finetuneSteps} onValueChange={handleFinetuneStepsChange} />
             </div>
 
             {/* PredictionIntervals Input */}
@@ -91,7 +93,7 @@ function Step2({
               <label className="block text-sm leading-5 font-medium text-gray-700">
                 Define level for prediction intervals (uncertainty estimation)
               </label>
-              <NumberInput value={predictionIntervals} onValueChange={setPredictionIntervals} />
+              <NumberInput value={form.predictionIntervals} onValueChange={handlePredictionIntervalsChange} />
             </div>
           </div>
 

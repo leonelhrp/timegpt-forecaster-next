@@ -1,25 +1,31 @@
-import React, { useState, useId } from "react";
+import React, { useId } from "react";
 import { useRouter } from 'next/navigation'
-import Link from "next/link";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
 import { COUNTRIES } from "@/utils/consts";
+import { useForecastStore } from "@/store/useForecastStore";
 
 function Step3({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-}): React.JSX.Element {
-  const router = useRouter();
+  }): React.JSX.Element {
+  const router = useRouter()
   const itemId = useId();
+  const { form, setPropertyForm } = useForecastStore()
 
-  const [defaultCalendarVar, setDefaultCalendarVar] = useState<string>('True');
-  const [countryHolidays, setCountryHolidays] = useState<Array<string>>([]);
-
-  const runForecast = () => {
+  const handleRunForecast = () => {
     router.push('/forecast-result');
   };
+
+  const handleDefaultCalendarVarChange = (value: string) => {
+    setPropertyForm({ key: 'defaultCalendarVar', value: value === 'true' });
+  }
+
+  const handleCountryHolidaysChange = (value: string[]) => {
+    setPropertyForm({ key: 'countryHolidays', value })
+  }
 
   return (
     <motion.div
@@ -47,11 +53,11 @@ function Step3({
               <label className="block text-sm leading-5 font-medium text-gray-700">
                 Add default calendar variables
               </label>
-              <Select value={defaultCalendarVar} onValueChange={setDefaultCalendarVar}>
-                <SelectItem key={'True'} value={'True'}>
+              <Select value={String(form.defaultCalendarVar)} onValueChange={handleDefaultCalendarVarChange}>
+                <SelectItem key={`${itemId}-${true}`} value={String(true)}>
                   True
                 </SelectItem>
-                <SelectItem key={'False'} value={'False'}>
+                <SelectItem key={`${itemId}-${false}`} value={String(false)}>
                   False
                 </SelectItem>
               </Select>
@@ -61,9 +67,9 @@ function Step3({
               <label className="block text-sm leading-5 font-medium text-gray-700">
                 Add default calendar variables
               </label>
-              <MultiSelect value={countryHolidays} onValueChange={setCountryHolidays}>
+              <MultiSelect value={form.countryHolidays} onValueChange={handleCountryHolidaysChange}>
                 {COUNTRIES.map(country => (
-                  <MultiSelectItem key={itemId} value={country.code}>
+                  <MultiSelectItem key={`${itemId}-${country.name}`} value={country.name}>
                     {country.name}
                   </MultiSelectItem>
                 ))}
@@ -86,8 +92,9 @@ function Step3({
           </button>
         </div>
         <div>
-          <Link
-            href="/forecast-result"
+          <button
+            onClick={handleRunForecast}
+            disabled={false}
             className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] no-underline flex gap-x-2  active:scale-95 scale-100 duration-75"
             style={{
               boxShadow:
@@ -96,7 +103,7 @@ function Step3({
           >
             <span> Run Forecast </span>
             <Icon.PersonSimpleRun size={20} />
-          </Link>
+          </button>
         </div>
       </div>
     </motion.div>

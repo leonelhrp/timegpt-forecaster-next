@@ -1787,3 +1787,18 @@ export const COUNTRIES = [
     mobileCode: '+263',
   },
 ];
+
+export const EXOGENOUS_QUESTIONS = [
+  {
+    id: 1,
+    name: "Yes, I have a exogenous data",
+    description: "Lorem ipsum dolor sit amet",
+    value: true,
+  },
+  {
+    id: 2,
+    name: "No, I don't have a exogenous data",
+    description: "Lorem ipsum dolor sit amet",
+    value: false,
+  },
+];

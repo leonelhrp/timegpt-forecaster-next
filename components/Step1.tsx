@@ -1,29 +1,38 @@
 import React from "react";
 import * as Icon from "@phosphor-icons/react";
+import * as dfd from 'danfojs';
 import { motion } from "framer-motion";
 import { RadioGroup } from "@headlessui/react";
 import { ExogenousQuestionType } from "@/types/forecast";
 import { UploadCSV } from '@/components/UploadCSV';
-import { exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
+import { EXOGENOUS_QUESTIONS, exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
+import { useForecastStore } from "@/store/useForecastStore";
 
 function Step1({
-  setStep, selected, setSelected, exogenousQuestions
+  setStep
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  selected: ExogenousQuestionType | null;
-  setSelected: React.Dispatch<React.SetStateAction<ExogenousQuestionType | null>>;
-  exogenousQuestions: Array<ExogenousQuestionType>;
 }): React.JSX.Element {
+  const { form, setPropertyForm } = useForecastStore()
+
   const classNames = (...classes: string[]) => {
     return classes.filter(Boolean).join(" ");
   }
 
   const onDoneTimeSeriesFile = (file: File) => {
     console.log(file);
+    dfd.readCSV(file).then((df) => {
+      console.log('readCSV -> TimeSeriesFile: ', df);
+      df.print()
+    })
   };
 
   const onDoneExogenousFile = (file: File) => {
     console.log(file);
+    dfd.readCSV(file).then((df) => {
+      console.log('readCSV -> ExogenousFile: ', df);
+      df.print()
+    })
   };
 
   const UploadCSVTimeSeriesProps = {
@@ -40,7 +49,9 @@ function Step1({
     exampleLink: exogenousUploadExampleLink
   }
 
-  const shouldDisplayExogenousUpload = selected?.value;
+  const handleHaveExogenousDataChange = (value: ExogenousQuestionType) => {
+    setPropertyForm({ key: 'haveExogenousData', value })
+  }
 
   return (
     <motion.div
@@ -61,12 +72,12 @@ function Step1({
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae cupiditate quidem deleniti, minima debitis ipsam rem culpa voluptas neque blanditiis dolor rerum itaque saepe ipsum eligendi quam eveniet. Quibusdam, molestiae?
       </p>
       <div>
-        {selected ? (
+        {form.haveExogenousData !== null ? (
           <>
             <div className="mb-8">
               <UploadCSV {...UploadCSVTimeSeriesProps} />
             </div>
-            {shouldDisplayExogenousUpload && (
+            {form.haveExogenousData && (
               <div className="mb-8">
                 <UploadCSV {...UploadCSVExogenousProps} />
               </div>
@@ -74,12 +85,12 @@ function Step1({
           </>
         ) : (
           <div>
-            <RadioGroup value={selected} onChange={setSelected}>
+            <RadioGroup value={form.haveExogenousData} onChange={handleHaveExogenousDataChange}>
               <RadioGroup.Label >
                 Do you have exogenous data?
               </RadioGroup.Label>
               <div className="space-y-4">
-                {exogenousQuestions.map((question) => (
+                {EXOGENOUS_QUESTIONS.map((question) => (
                   <RadioGroup.Option
                     key={question.id}
                     value={question}

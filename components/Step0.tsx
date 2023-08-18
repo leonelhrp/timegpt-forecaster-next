@@ -2,20 +2,17 @@ import React, { useState, useEffect } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 function Step0({
-  setStep,
-  storedApiKey,
-  setStoredApiKey,
-  apiKey,
-  setApiKey
+  setStep
 }: {
     setStep: React.Dispatch<React.SetStateAction<number>>;
-    storedApiKey: string | null;
-    setStoredApiKey: React.Dispatch<React.SetStateAction<string>>;
-    apiKey: string;
-    setApiKey: React.Dispatch<React.SetStateAction<string>>;
   }): React.JSX.Element {
+  // Nixtla API key
+  const [storedApiKey, setStoredApiKey] = useLocalStorage<string>('apiKey', '');
+  const [apiKey, setApiKey] = useState<string>(storedApiKey ?? '');
+
   const [editing, setEditing] = useState<boolean>(!storedApiKey);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
