@@ -1,6 +1,7 @@
-import Plot from 'react-plotly.js';
-import moment from "moment";
+"use client";
+
 import * as dfd from 'danfojs';
+import Plot from 'react-plotly.js';
 import { datesToDataframe } from "@/utils/forecast"
 
 interface ForecastPlotProps {

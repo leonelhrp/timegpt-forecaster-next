@@ -1,6 +1,13 @@
 "use client";
 
-import ForecastPlot from "@/components/ForecastPlot";
+import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react';
+
+const ForecastPlot = dynamic(() => import("@/components/ForecastPlot"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false
+})
+
 export default function ForecastResultPage() {
   return (
     <div className="flex flex-col items-center justify-start bg-[#FCFCFC] px-4 py-8 md:overflow-auto mt-16 mb-16">

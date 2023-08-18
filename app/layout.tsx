@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/react';
-import { Layout } from "@/components/Layout";
 import "../styles/globals.css";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +36,13 @@ export default async function RootLayout({
     <html lang="en">
       <body className="scroll-smooth antialiased [font-feature-settings:'ss01']">
         <div className="flex w-full">
-          <Layout>{children}</Layout>
+          <div className="relative flex w-full flex-col">
+            <Header />
+            <main className="flex-auto">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </div>
         <Analytics />
       </body>
