@@ -52,33 +52,33 @@ const ForecastPlot = ({ data, forecastResults, selected_uid }: ForecastPlotProps
   });
   console.log('Caso de prueba 1: Sin países ni bandera por defecto:', result);
 
-  result = datesToDataframe({
-    data: dataTest,
-    freq: 'H',
-    horizon: 24,
-    defaultCalVars: false,
-    countries: 'US,CA'
-  });
-  console.log('Caso de prueba 2: Con países pero sin bandera por defecto: ', result);
+  // result = datesToDataframe({
+  //   data: dataTest,
+  //   freq: 'H',
+  //   horizon: 24,
+  //   defaultCalVars: false,
+  //   countries: 'US,CA'
+  // });
+  // console.log('Caso de prueba 2: Con países pero sin bandera por defecto: ', result);
 
 
-  result = datesToDataframe({
-    data: dataTest,
-    freq: 'H',
-    horizon: 24,
-    defaultCalVars: true,
-    countries: 'US,CA'
-  });
-  console.log('Caso de prueba 3: Con países y bandera por defecto: ', result);
+  // result = datesToDataframe({
+  //   data: dataTest,
+  //   freq: 'H',
+  //   horizon: 24,
+  //   defaultCalVars: true,
+  //   countries: 'US,CA'
+  // });
+  // console.log('Caso de prueba 3: Con países y bandera por defecto: ', result);
 
-  result = datesToDataframe({
-    data: dataTest,
-    freq: 'H',
-    horizon: 24,
-    defaultCalVars: true,
-    countries: ''
-  });
-  console.log('Caso de prueba 4: Sin países pero con bandera por defecto: ', result);
+  // result = datesToDataframe({
+  //   data: dataTest,
+  //   freq: 'H',
+  //   horizon: 24,
+  //   defaultCalVars: true,
+  //   countries: ''
+  // });
+  // console.log('Caso de prueba 4: Sin países pero con bandera por defecto: ', result);
 
   return (
     <Plot

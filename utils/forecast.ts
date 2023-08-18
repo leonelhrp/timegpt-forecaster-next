@@ -55,8 +55,8 @@ export function datesToDataframe({
         return weekNumber
       });
 
-      console.log('df: ', df);
-      df.print();
+      // console.log('df: ', df);
+      // df.print();
 
       let dayDummies = dfd.getDummies(df['day_of_week'], { prefix: 'day', prefixSeparator: '_' });
       let dayColumns = dayDummies.columns;

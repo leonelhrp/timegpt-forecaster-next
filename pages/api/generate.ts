@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as dfd from 'danfojs-node';
+import { ForecastResult } from '@/types/forecast';
+import { MOCK_FORECAST_REPONSE } from '@/utils/mock';
 
 interface PredictFromApiBody {
   df: any;
@@ -61,5 +63,5 @@ export default async function handler(
   const forecastData = await forecastRes.json();
   console.log('forecastData: ', forecastData);
 
-  res.status(200).json(forecastData);
+  res.status(200).json(MOCK_FORECAST_REPONSE);
 }

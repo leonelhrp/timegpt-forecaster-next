@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ExogenousQuestionType } from "@/types/run-forecast";
+import { ExogenousQuestionType } from "@/types/forecast";
 import Step0 from "@/components/Step0";
 import Step1 from "@/components/Step1";
 import Step2 from "@/components/Step2";
@@ -12,6 +12,7 @@ import InfoStep1 from "@/components/InfoStep1";
 import InfoStep2 from "@/components/InfoStep2";
 import InfoStep3 from "@/components/InfoStep3";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useForecastStore } from "@/store/useForecastStore";
 
 const exogenousQuestions = [
   {

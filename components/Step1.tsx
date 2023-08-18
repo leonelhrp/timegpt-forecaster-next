@@ -2,7 +2,7 @@ import React from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { RadioGroup } from "@headlessui/react";
-import { ExogenousQuestionType } from "@/types/run-forecast";
+import { ExogenousQuestionType } from "@/types/forecast";
 import { UploadCSV } from '@/components/UploadCSV';
 import { exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
 
