@@ -1,11 +1,18 @@
 import React from "react";
 import * as Icon from "@phosphor-icons/react";
-import * as dfd from 'danfojs';
 import { motion } from "framer-motion";
 import { RadioGroup } from "@headlessui/react";
 import { ExogenousQuestionType } from "@/types/forecast";
 import { UploadCSV } from '@/components/UploadCSV';
-import { EXOGENOUS_QUESTIONS, exogenousUploadExampleLink, exogenousUploadSubtitle, exogenousUploadTitle, timeSeriesUploadExampleLink, timeSeriesUploadSubtitle, timeSeriesUploadTitle } from "@/utils/consts";
+import {
+  EXOGENOUS_QUESTIONS,
+  TIME_SERIES_UPLOAD_TITLE,
+  TIME_SERIES_UPLOAD_SUBTITLE,
+  TIME_SERIES_UPLOAD_EXAMPLE_LINK,
+  EXOGENOUS_UPLOAD_TITLE,
+  EXOGENOUS_UPLOAD_SUBTITLE,
+  EXOGENOUS_UPLOAD_EXAMPLE_LINK
+} from "@/utils/consts";
 import { useForecastStore } from "@/store/useForecastStore";
 
 function Step1({
@@ -20,33 +27,25 @@ function Step1({
   }
 
   const onDoneTimeSeriesFile = (file: File) => {
-    console.log(file);
-    dfd.readCSV(file).then((df) => {
-      console.log('readCSV -> TimeSeriesFile: ', df);
-      df.print()
-    })
+    setPropertyForm({ key: 'timeSeriesFile', value: file })
   };
 
   const onDoneExogenousFile = (file: File) => {
-    console.log(file);
-    dfd.readCSV(file).then((df) => {
-      console.log('readCSV -> ExogenousFile: ', df);
-      df.print()
-    })
+    setPropertyForm({ key: 'exogenousFile', value: file })
   };
 
   const UploadCSVTimeSeriesProps = {
     onDone: onDoneTimeSeriesFile,
-    title: timeSeriesUploadTitle,
-    subtitle: timeSeriesUploadSubtitle,
-    exampleLink: timeSeriesUploadExampleLink
+    title: TIME_SERIES_UPLOAD_TITLE,
+    subtitle: TIME_SERIES_UPLOAD_SUBTITLE,
+    exampleLink: TIME_SERIES_UPLOAD_EXAMPLE_LINK
   }
 
   const UploadCSVExogenousProps = {
     onDone: onDoneExogenousFile,
-    title: exogenousUploadTitle,
-    subtitle: exogenousUploadSubtitle,
-    exampleLink: exogenousUploadExampleLink
+    title: EXOGENOUS_UPLOAD_TITLE,
+    subtitle: EXOGENOUS_UPLOAD_SUBTITLE,
+    exampleLink: EXOGENOUS_UPLOAD_EXAMPLE_LINK
   }
 
   const handleHaveExogenousDataChange = (value: ExogenousQuestionType) => {
@@ -69,7 +68,7 @@ function Step1({
         Upload Data
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae cupiditate quidem deleniti, minima debitis ipsam rem culpa voluptas neque blanditiis dolor rerum itaque saepe ipsum eligendi quam eveniet. Quibusdam, molestiae?
+        Welcome to the data upload assistant. To get started, provide your time series and, if available, your exogenous data. This information will feed into the forecasting process, enabling you to achieve more accurate results. If you need examples of format or content, download our provided sample files.
       </p>
       <div>
         {form.haveExogenousData !== null ? (

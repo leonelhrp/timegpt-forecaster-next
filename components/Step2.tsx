@@ -8,8 +8,8 @@ import { useForecastStore } from "@/store/useForecastStore";
 function Step2({
   setStep,
 }: {
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-  }): React.JSX.Element {
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}): React.JSX.Element {
   const { form, setPropertyForm } = useForecastStore()
   const itemId = useId();
 
@@ -45,7 +45,7 @@ function Step2({
         Forecasting parameters
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
+        Set the parameters that will guide the forecasting. These parameters are essential to ensure accuracy and efficiency in the predictions.
       </p>
       <div className="mt-8">
         <div className="flex flex-col gap-y-4">

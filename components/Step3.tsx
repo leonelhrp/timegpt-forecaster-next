@@ -43,7 +43,7 @@ function Step3({
         Calendar variables
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatibus nobis incidunt! Iure fugiat libero maiores commodi adipisci placeat omnis ab quisquam quasi architecto officia, quibusdam, totam beatae expedita. Obcaecati.
+      Select the appropriate calendar variables to consider for your forecast. This can include default variables and specific country holidays.
       </p>
       <div className="mt-8">
         <div className="flex flex-col gap-y-4">
@@ -65,7 +65,7 @@ function Step3({
 
             <div className="flex flex-col gap-y-2 w-1/2">
               <label className="block text-sm leading-5 font-medium text-gray-700">
-                Add default calendar variables
+                Add country holidays
               </label>
               <MultiSelect value={form.countryHolidays} onValueChange={handleCountryHolidaysChange}>
                 {COUNTRIES.map(country => (

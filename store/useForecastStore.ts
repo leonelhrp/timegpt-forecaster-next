@@ -28,7 +28,9 @@ const INITIAL_STATE_FORM: FormState = {
   isSuccess: false,
   completed: false,
   defaultCalendarVar: false,
-  countryHolidays: []
+  countryHolidays: [],
+  timeSeriesFile: null,
+  exogenousFile: null
 }
 
 const INITIAL_STATE: State = {

@@ -12,7 +12,7 @@ import InfoStep2 from "@/components/InfoStep2";
 import InfoStep3 from "@/components/InfoStep3";
 
 export default function RunForecastPage() {
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(0);
 
   return (
     <AnimatePresence>

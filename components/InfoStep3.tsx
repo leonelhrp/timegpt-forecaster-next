@@ -3,12 +3,11 @@ import React from "react";
 function InfoStep3(): React.JSX.Element {
   return (
     <div className="flex flex-col gap-y-2">
-      <h1 className="text-[#1E2B3A] text-[36px] font-bold">
-        Calendar variables Info
+      <h1 className="text-[#1E2B3A] text-[20px] font-bold">
+        Information on Calendar Variables
       </h1>
-      <p className="text-[#1E2B3A] text-[16px] font-medium">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
+      <p className="text-[#1E2B3A] text-[12px] font-xs">
+      Calendar variables, such as holidays and weekdays, can significantly impact certain forecasts. Incorporate these variables to refine your prediction's accuracy based on calendar-related events.
       </p>
     </div>
   );

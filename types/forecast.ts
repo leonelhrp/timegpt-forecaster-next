@@ -28,4 +28,6 @@ export interface FormState {
   predictionIntervals: number;
   defaultCalendarVar: boolean;
   countryHolidays: string[];
+  timeSeriesFile: File | null;
+  exogenousFile: File | null;
 }

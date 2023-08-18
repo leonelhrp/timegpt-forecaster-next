@@ -1,9 +1,9 @@
-export const timeSeriesUploadTitle = 'Upload your time series data (CSV format)'
-export const timeSeriesUploadSubtitle = 'Download Target Example Data'
-export const timeSeriesUploadExampleLink = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity.csv'
-export const exogenousUploadTitle = 'Upload your exogenous data (CSV format)'
-export const exogenousUploadSubtitle = 'Download Exogenous Variables Example Data'
-export const exogenousUploadExampleLink = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/exogenous-vars-electricity.csv'
+export const TIME_SERIES_UPLOAD_TITLE = 'Upload your time series data (CSV format)';
+export const TIME_SERIES_UPLOAD_SUBTITLE = 'Download Target Example Data';
+export const TIME_SERIES_UPLOAD_EXAMPLE_LINK = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity.csv';
+export const EXOGENOUS_UPLOAD_TITLE = 'Upload your exogenous data (CSV format)';
+export const EXOGENOUS_UPLOAD_SUBTITLE = 'Download Exogenous Variables Example Data';
+export const EXOGENOUS_UPLOAD_EXAMPLE_LINK = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/exogenous-vars-electricity.csv';
 
 export const FRECUENCIES = [
   { key: "B", value: "business day frequency" },
@@ -1791,14 +1791,14 @@ export const COUNTRIES = [
 export const EXOGENOUS_QUESTIONS = [
   {
     id: 1,
-    name: "Yes, I have a exogenous data",
-    description: "Lorem ipsum dolor sit amet",
+    name: "Yes, I have exogenous data",
+    description: "Provide additional data sources that can enhance the forecast accuracy by offering external context.",
     value: true,
   },
   {
     id: 2,
-    name: "No, I don't have a exogenous data",
-    description: "Lorem ipsum dolor sit amet",
+    name: "No, I don't have exogenous data",
+    description: "Rely solely on the main dataset without additional external information for forecasting.",
     value: false,
   },
 ];
