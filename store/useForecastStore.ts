@@ -7,7 +7,7 @@ interface State {
 }
 
 interface Actions {
-  sendFormData: () => Promise<void>
+  sendTimeGPTMultiSeriesForm: () => Promise<void>
   setResults: (result: State["result"]) => void
   setPropertyForm: (
     { key, value }: { key: keyof FormState, value: any }
@@ -27,7 +27,7 @@ const INITIAL_STATE_FORM: FormState = {
   completed: false,
   defaultCalendarVar: false,
   countryHolidays: [],
-  timeSeriesFile: null,
+  timeSeriesData: null,
 }
 
 const INITIAL_STATE: State = {
@@ -38,29 +38,28 @@ const INITIAL_STATE: State = {
 export const useForecastStore = create<State & Actions>((set, get) => ({
   form: INITIAL_STATE.form,
   result: INITIAL_STATE.result,
-  sendFormData: async () => {
+  sendTimeGPTMultiSeriesForm: async () => {
     try {
       set({ form: { ...get().form, isSubmitting: true, loading: true } })
 
-      const headers = {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        authorization: get().form.apiKey,
-      };
-
-      const response = await fetch("/api/generate", {
+      const options = {
         method: 'POST',
-        headers,
-        body: JSON.stringify(get().form),
-      });
-      console.log("sendFormData -> response: ", response);
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          authorization: get().form.apiKey,
+        },
+        body: JSON.stringify(get().form)
+      }
 
+      const response = await fetch("/api/timegpt-multi-series", options);
       const data = await response.json()
 
-      console.log("sendFormData -> data: ", data);
+      console.log("sendTimeGPTMultiSeriesForm -> response: ", response);
+      console.log("sendTimeGPTMultiSeriesForm -> data: ", data);
       set({ result: data })
     } catch (error) {
-      console.error("sendFormData -> error: ", error);
+      console.error("sendTimeGPTMultiSeriesForm -> error: ", error);
     } finally {
       set({ form: { ...get().form, loading: false } })
     }

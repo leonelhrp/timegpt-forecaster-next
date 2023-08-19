@@ -13,11 +13,11 @@ function Step3({
   }): React.JSX.Element {
   const router = useRouter()
   const itemId = useId();
-  const { form, setPropertyForm, sendFormData } = useForecastStore()
+  const { form, setPropertyForm, sendTimeGPTMultiSeriesForm } = useForecastStore()
 
-  const handleRunForecast = () => {
-    //router.push('/forecast-result');
-    sendFormData()
+  const handleRunForecast = async () => {
+    await sendTimeGPTMultiSeriesForm()
+    router.push('/forecast-result');
   };
 
   const handleDefaultCalendarVarChange = (value: string) => {

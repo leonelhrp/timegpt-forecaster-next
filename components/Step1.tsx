@@ -8,20 +8,24 @@ import {
   TIME_SERIES_UPLOAD_EXAMPLE_LINK,
 } from "@/utils/consts";
 import { useForecastStore } from "@/store/useForecastStore";
+import { csvFileToYRequestBody } from "@/utils/functions";
 
 function Step1({
   setStep
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
-  const { form, setPropertyForm } = useForecastStore()
+  const { form, setPropertyForm } = useForecastStore();
 
-  const classNames = (...classes: string[]) => {
-    return classes.filter(Boolean).join(" ");
-  }
+  const onDoneTimeSeriesFile = async (file: File) => {
+    try {
+      const transformedData = await csvFileToYRequestBody(file);
+      console.log('CSV data: ', transformedData);
 
-  const onDoneTimeSeriesFile = (file: File) => {
-    setPropertyForm({ key: 'timeSeriesFile', value: file })
+      setPropertyForm({ key: 'timeSeriesData', value: transformedData })
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const UploadCSVTimeSeriesProps = {

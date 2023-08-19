@@ -1,6 +1,8 @@
+export type ForecastYDataType = Array<Array<Date | number | string>>;
+
 export interface ForecastObjectType {
   columns: string[];
-  data:    Array<Array<Date | number | string>>;
+  data: ForecastYDataType;
 }
 
 export interface ForecastResult {
@@ -21,5 +23,5 @@ export interface FormState {
   predictionIntervals: number;
   defaultCalendarVar: boolean;
   countryHolidays: string[];
-  timeSeriesFile: File | null;
+  timeSeriesData: ForecastObjectType | null
 }
