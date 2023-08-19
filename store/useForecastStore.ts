@@ -16,7 +16,6 @@ interface Actions {
 
 const INITIAL_STATE_FORM: FormState = {
   apiKey: "",
-  haveExogenousData: null,
   frecuency: "B",
   horizon: 11,
   finetuneSteps: 0,
@@ -29,7 +28,6 @@ const INITIAL_STATE_FORM: FormState = {
   defaultCalendarVar: false,
   countryHolidays: [],
   timeSeriesFile: null,
-  exogenousFile: null
 }
 
 const INITIAL_STATE: State = {

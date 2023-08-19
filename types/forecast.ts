@@ -1,10 +1,3 @@
-export type ExogenousQuestionType = {
-  id: number,
-  name: String,
-  description: String,
-  value: Boolean,
-}
-
 export interface ForecastObjectType {
   columns: string[];
   data:    Array<Array<Date | number | string>>;
@@ -22,7 +15,6 @@ export interface FormState {
   status: string;
   isSuccess: boolean;
   completed: boolean;
-  haveExogenousData: boolean | null;
   frecuency: string;
   horizon: number;
   finetuneSteps: number;
@@ -30,5 +22,4 @@ export interface FormState {
   defaultCalendarVar: boolean;
   countryHolidays: string[];
   timeSeriesFile: File | null;
-  exogenousFile: File | null;
 }
