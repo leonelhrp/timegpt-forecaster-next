@@ -2,7 +2,7 @@ import React, { useId } from "react";
 import { useRouter } from 'next/navigation'
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
+import { Select, SelectItem, MultiSelect, MultiSelectItem, Subtitle } from "@tremor/react";
 import { COUNTRIES } from "@/utils/consts";
 import { useForecastStore } from "@/store/useForecastStore";
 
@@ -13,10 +13,11 @@ function Step3({
   }): React.JSX.Element {
   const router = useRouter()
   const itemId = useId();
-  const { form, setPropertyForm } = useForecastStore()
+  const { form, setPropertyForm, sendFormData } = useForecastStore()
 
   const handleRunForecast = () => {
-    router.push('/forecast-result');
+    //router.push('/forecast-result');
+    sendFormData()
   };
 
   const handleDefaultCalendarVarChange = (value: string) => {
@@ -74,6 +75,13 @@ function Step3({
                   </MultiSelectItem>
                 ))}
               </MultiSelect>
+              {form.countryHolidays.length > 0 && (
+                <div className="flex flex-col">
+                  {form.countryHolidays.map(country => (
+                    <Subtitle className="text-xs" key={`${itemId}-${country}-country`}>{country}</Subtitle>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

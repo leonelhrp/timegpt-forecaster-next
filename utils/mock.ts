@@ -61,7 +61,7 @@ const generateRandomWeights = (): number[] => {
 };
 
 
-export const MOCK_FORECAST_REPONSE: ForecastResult = {
+export const MOCK_FORECAST_RESPONSE: ForecastResult = {
   "forecast": {
     "columns": [
       "unique_id",

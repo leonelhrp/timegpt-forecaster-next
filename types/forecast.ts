@@ -16,6 +16,7 @@ export interface ForecastResult {
 }
 
 export interface FormState {
+  apiKey: string;
   loading: boolean;
   isSubmitting: boolean;
   status: string;

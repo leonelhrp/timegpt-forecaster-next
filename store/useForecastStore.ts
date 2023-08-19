@@ -4,12 +4,10 @@ import { create } from "zustand"
 interface State {
   form: FormState
   result: ForecastResult | null
-  isLoading: boolean
-  error: any
 }
 
 interface Actions {
-  fetchData: () => Promise<void>
+  sendFormData: () => Promise<void>
   setResults: (result: State["result"]) => void
   setPropertyForm: (
     { key, value }: { key: keyof FormState, value: any }
@@ -17,6 +15,7 @@ interface Actions {
 }
 
 const INITIAL_STATE_FORM: FormState = {
+  apiKey: "",
   haveExogenousData: null,
   frecuency: "B",
   horizon: 11,
@@ -36,23 +35,36 @@ const INITIAL_STATE_FORM: FormState = {
 const INITIAL_STATE: State = {
   form: INITIAL_STATE_FORM,
   result: null,
-  isLoading: false,
-  error: null,
 }
 
-export const useForecastStore = create<State & Actions>(set => ({
+export const useForecastStore = create<State & Actions>((set, get) => ({
   form: INITIAL_STATE.form,
   result: INITIAL_STATE.result,
-  isLoading: INITIAL_STATE.isLoading,
-  error: INITIAL_STATE.error,
-  fetchData: async () => {
+  sendFormData: async () => {
     try {
-      set({ isLoading: true, error: null })
-      const response = await fetch("/api/generate")
+      set({ form: { ...get().form, isSubmitting: true, loading: true } })
+
+      const headers = {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        authorization: get().form.apiKey,
+      };
+
+      const response = await fetch("/api/generate", {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(get().form),
+      });
+      console.log("sendFormData -> response: ", response);
+
       const data = await response.json()
-      // set({ result: data, isLoading: false })
+
+      console.log("sendFormData -> data: ", data);
+      set({ result: data })
     } catch (error) {
-      set({ error, isLoading: false })
+      console.error("sendFormData -> error: ", error);
+    } finally {
+      set({ form: { ...get().form, loading: false } })
     }
   },
   setResults: (result: State["result"]) => set({ result }),

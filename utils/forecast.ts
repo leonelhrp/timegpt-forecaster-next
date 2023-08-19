@@ -55,13 +55,11 @@ export function datesToDataframe({
         return weekNumber
       });
 
-      // console.log('df: ', df);
-      // df.print();
 
       let dayDummies = dfd.getDummies(df['day_of_week'], { prefix: 'day', prefixSeparator: '_' });
       let dayColumns = dayDummies.columns;
       for (let col of dayColumns) {
-          dayDummies.asType(col, "int32");
+        dayDummies.asType(col, "int32");
       }
 
       df = dfd.concat({ dfList: [df, dayDummies], axis: 1 }) as dfd.DataFrame;
@@ -72,7 +70,7 @@ export function datesToDataframe({
       let monthDummies = dfd.getDummies(df['month'], { prefix: 'month' });
       let monthColumns = monthDummies.columns;
       for (let col of monthColumns) {
-          monthDummies.asType(col, "int32");
+        monthDummies.asType(col, "int32");
       }
 
       df = dfd.concat({ dfList: [df, monthDummies], axis: 1 }) as dfd.DataFrame;
@@ -87,7 +85,7 @@ export function datesToDataframe({
       let monthDummies = dfd.getDummies(df['month'], { prefix: 'month' });
       let monthColumns = monthDummies.columns;
       for (let col of monthColumns) {
-          monthDummies.asType(col, "int32");
+        monthDummies.asType(col, "int32");
       }
 
       df = dfd.concat({ dfList: [df, monthDummies], axis: 1 }) as dfd.DataFrame;
@@ -95,4 +93,122 @@ export function datesToDataframe({
     }
   }
   return df;
+}
+
+interface PreprocessExogenousParams {
+  file: string | null;
+  calDf: dfd.DataFrame | null;
+  horizon: number;
+}
+
+async function preprocessExogenous({
+  file, calDf, horizon
+}: PreprocessExogenousParams): Promise<[dfd.DataFrame | null, dfd.DataFrame | null]> {
+  if (file != null) {
+    let XDf = await dfd.readCSV(file);
+    let requiredColumns = ["unique_id", "ds"];
+    // Check if all required columns are present in X_df
+    if (!requiredColumns.every(column => XDf.columns.includes(column))) {
+      throw new Error("Not all required columns are present in the exogenous data.");
+    }
+    XDf['ds'] = XDf['ds'].to_datetime();
+    XDf['unique_id'] = XDf['unique_id'].astype('string');
+    if (calDf != null) {
+      XDf = XDf.merge(calDf);
+    }
+    let XDfTest = XDf.groupby(['unique_id']).apply((group) => group.tail(horizon));
+    let XDfTrain = XDf.drop({ index: XDfTest.index });
+    return [XDfTrain, XDfTest];
+  } else if (calDf != null) {
+    let XDfTest = calDf.groupby(['unique_id']).apply((group) => group.tail(horizon));
+    let XDfTrain = calDf.drop({ index: XDfTest.index });
+    return [XDfTrain, XDfTest];
+  } else {
+    return [null, null];
+  }
+}
+
+interface PredictFromApiParams {
+  df: dfd.DataFrame;
+  horizon: number;
+  XDf: dfd.DataFrame | null;
+  XDfFuture: dfd.DataFrame | null;
+  finetuneSteps: number;
+  level: Array<number>;
+  cleanExFirst: boolean;
+  freq: string;
+}
+
+async function predictFromApi({
+  df,
+  horizon,
+  XDf,
+  XDfFuture,
+  finetuneSteps,
+  level,
+  cleanExFirst,
+  freq
+}: PredictFromApiParams) {
+  return [df, null];
+}
+
+interface PerformForecastParams {
+  file: string;
+  fileEx: string | null;
+  freq: string;
+  horizon: number;
+  finetuneSteps: number;
+  level: Array<number>;
+  addDefaultCalVars: boolean;
+  countries: string;
+}
+
+async function performForecast({
+  file,
+  fileEx,
+  freq,
+  horizon,
+  finetuneSteps,
+  level,
+  addDefaultCalVars,
+  countries
+}: PerformForecastParams): Promise<[dfd.DataFrame, dfd.DataFrame | null, dfd.DataFrame | null, dfd.DataFrame | null, dfd.DataFrame | null]> {
+  let df = await dfd.readCSV(file);
+
+  df['unique_id'] = df['unique_id'].astype('string');
+  let requiredColumns = ["unique_id", "ds", "y"];
+  // Check if all required columns are present in df
+  if (!requiredColumns.every(column => df.columns.includes(column))) {
+    throw new Error("Not all required columns are present in the data.");
+  }
+  df['ds'] = df['ds'].to_datetime();
+  let calDf = null;
+  if (addDefaultCalVars || countries != "") {
+    calDf = df.groupby(['unique_id']).apply((group) => datesToDataframe({
+      data: group,
+      freq: freq,
+      horizon: horizon,
+      defaultCalVars: addDefaultCalVars,
+      countries: countries
+    })).reset_index().drop({ columns: ['level_1'] });
+  }
+  const [XDf, XDfFuture] = await preprocessExogenous({ file: fileEx, calDf: calDf, horizon: horizon });
+  const [forecastResults, weights] = await predictFromApi({
+    df: df,
+    horizon: horizon,
+    XDf: XDf,
+    XDfFuture: XDfFuture,
+    finetuneSteps: finetuneSteps,
+    level: level,
+    cleanExFirst: true,
+    freq: freq
+  });
+  let weightsDf = null;
+  if (XDf != null) {
+    weightsDf = new dfd.DataFrame({
+      features: XDf.drop({ columns: ['unique_id', 'ds'] }).columns,
+      weights: weights
+    });
+  }
+  return [df, XDf, XDfFuture, forecastResults, weightsDf];
 }

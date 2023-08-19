@@ -3,21 +3,21 @@ import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useForecastStore } from "@/store/useForecastStore";
 
 function Step0({
   setStep
 }: {
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-  }): React.JSX.Element {
-  // Nixtla API key
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}): React.JSX.Element {
+  const { form, setPropertyForm } = useForecastStore()
   const [storedApiKey, setStoredApiKey] = useLocalStorage<string>('apiKey', '');
-  const [apiKey, setApiKey] = useState<string>(storedApiKey ?? '');
 
   const [editing, setEditing] = useState<boolean>(!storedApiKey);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const validateApiKey = () => {
-    if (apiKey?.length <= 20) {
+    if (form.apiKey?.length <= 20) {
       setErrorMessage("The API key should be more than 20 characters.");
       return false;
     }
@@ -29,13 +29,13 @@ function Step0({
     if (!validateApiKey()) {
       return;
     }
-    setStoredApiKey(apiKey);
+    setStoredApiKey(form.apiKey);
     setStep(1);
   };
 
   const handleEdit = () => {
     setEditing(true);
-    setApiKey('');
+    setPropertyForm({ key: 'apiKey', value: '' })
   }
 
   const maskApiKey = (key: string) => {
@@ -44,7 +44,7 @@ function Step0({
   };
 
   useEffect(() => {
-    setApiKey(storedApiKey || '');
+    setPropertyForm({ key: 'apiKey', value: storedApiKey || '' })
     setEditing(!storedApiKey);
   }, [storedApiKey]);
 
@@ -69,8 +69,8 @@ function Step0({
       <div className="relative">
         <input
           type="text"
-          value={editing ? apiKey : maskApiKey(storedApiKey ?? '')}
-          onChange={(e) => setApiKey(e.target.value)}
+          value={editing ? form.apiKey : maskApiKey(storedApiKey ?? '')}
+          onChange={(e) => setPropertyForm({ key: 'apiKey', value: e.target.value })}
           onBlur={validateApiKey}
           placeholder="API KEY"
           className="w-full p-2 mt-4 border rounded-md"
@@ -99,10 +99,10 @@ function Step0({
         <div>
           <button
             onClick={handleContinue}
-            disabled={apiKey?.length <= 20}
-            className={`group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center ${apiKey?.length >= 20 ? 'bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247]' : 'bg-gray-400 text-white cursor-not-allowed'} no-underline flex gap-x-2  active:scale-95 scale-100 duration-75`}
+            disabled={form.apiKey?.length <= 20}
+            className={`group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center ${form.apiKey?.length >= 20 ? 'bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247]' : 'bg-gray-400 text-white cursor-not-allowed'} no-underline flex gap-x-2  active:scale-95 scale-100 duration-75`}
             style={{
-              boxShadow: apiKey?.length >= 20
+              boxShadow: form.apiKey?.length >= 20
                 ? "0px 1px 4px rgba(13, 34, 71, 0.17), inset 0px 0px 0px 1px #061530, inset 0px 0px 0px 2px rgba(255, 255, 255, 0.1)"
                 : "none",
             }}
