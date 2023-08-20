@@ -1,29 +1,8 @@
+import { TimeGPTRequestBody, TimeGPTResponse } from '@/types/forecast';
+import { TimeGPTStoreFormState } from '@/types/store';
+import { convertTimeGPTToGraphData } from '@/utils/functions';
 import { MOCK_TIMEGPT_MULTISERIES_REQUEST } from '@/utils/mock';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-type TimeSeriesData = {
-  columns: string[];
-  data: [string, string, number][];
-};
-
-type TimeGPTRequestBody = {
-  fh: number;
-  y: TimeSeriesData;
-  freq: string;
-  clean_ex_first: boolean;
-  finetune_steps: number;
-};
-
-type TimeGPTResponse = {
-  data: {
-    forecast: TimeSeriesData;
-  };
-  message: string;
-  details: string;
-  code: string;
-  requestID: string;
-  support: string;
-};
 
 const TIMEGPT_MOCK_DATA_ACTIVE = process.env.TIMEGPT_MOCK_DATA === 'true';
 
@@ -32,19 +11,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).end();
   }
 
-  const body: TimeGPTRequestBody = req.body;
+  const formData: TimeGPTStoreFormState = req.body;
 
   if (
-    typeof body.fh !== 'number'
-    || !Array.isArray(body.y.columns)
-    || !Array.isArray(body.y.data)
-    || typeof body.freq !== 'string'
-    || typeof body.clean_ex_first !== 'boolean'
-    || typeof body.finetune_steps !== 'number'
+    typeof formData.horizon !== 'number'
+    || formData.timeSeriesData.columns.length === 0
+    || formData.timeSeriesData.data.length === 0
+    || typeof formData.frecuency !== 'string'
+    || typeof formData.defaultCalendarVar !== 'boolean'
+    || typeof formData.finetuneSteps !== 'number'
   ) {
     if (!TIMEGPT_MOCK_DATA_ACTIVE) {
       return res.status(400).json({ error: 'Invalid body format' });
     }
+  }
+
+  const body: TimeGPTRequestBody = {
+    fh: formData.horizon,
+    y: {
+      columns: formData.timeSeriesData.columns,
+      data: formData.timeSeriesData.data,
+    },
+    freq: formData.frecuency,
+    clean_ex_first: formData.defaultCalendarVar,
+    finetune_steps: formData.finetuneSteps,
   }
 
   try {
@@ -72,14 +62,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error(data.details);
     }
 
-    // Filter the response to send only relevant data to the client.
-    const clientResponse = {
-      data: data.data.forecast,
-      message: data.message,
-      details: data.details
-    };
+    const bodyData = convertTimeGPTToGraphData(body.y);
+    const resultData = convertTimeGPTToGraphData(data.data.forecast);
 
-    res.status(200).json(clientResponse);
+    const timeGPTGraphData = {
+      bodyData,
+      resultData,
+    }
+
+    res.status(200).json(timeGPTGraphData);
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });

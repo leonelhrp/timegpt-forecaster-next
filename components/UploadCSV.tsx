@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Badge } from "@tremor/react";
+import { UploadCSVProps } from '@/types/file';
 
-type Props = {
-  onDone: (file: File) => void;
-  title: string;
-  subtitle: string;
-  exampleLink?: string;
-}
-
-export const UploadCSV: React.FC<Props> = ({ onDone, title, subtitle, exampleLink }) => {
+export const UploadCSV: React.FC<UploadCSVProps> = ({ onDone, title, subtitle, exampleLink }) => {
   const [loading, setLoading] = useState(false);
   const [fileWarning, setFileWarning] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const onDropRejected = () => {
-    setFileWarning('Only CSV files are allowed.'); // Aviso para archivos rechazados
+    setFileWarning('Only CSV files are allowed.');
   };
 
   const onDrop = async (acceptedFiles: File[]) => {

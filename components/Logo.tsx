@@ -1,6 +1,4 @@
-interface LogoProps {
-  className?: string;
-}
+import { LogoProps } from "@/types/logo";
 
 function Logo({
   className,

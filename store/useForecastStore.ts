@@ -1,20 +1,7 @@
-import { ForecastResult, FormState } from "@/types/forecast"
+import { TimeGPTStoreActions, TimeGPTStoreFormState, TimeGPTStoreInitialState } from "@/types/store"
 import { create } from "zustand"
 
-interface State {
-  form: FormState
-  result: ForecastResult | null
-}
-
-interface Actions {
-  sendTimeGPTMultiSeriesForm: () => Promise<void>
-  setResults: (result: State["result"]) => void
-  setPropertyForm: (
-    { key, value }: { key: keyof FormState, value: any }
-  ) => void
-}
-
-const INITIAL_STATE_FORM: FormState = {
+const INITIAL_STATE_FORM: TimeGPTStoreFormState = {
   apiKey: "",
   frecuency: "B",
   horizon: 11,
@@ -27,15 +14,21 @@ const INITIAL_STATE_FORM: FormState = {
   completed: false,
   defaultCalendarVar: false,
   countryHolidays: [],
-  timeSeriesData: null,
+  timeSeriesData: {
+    columns: [],
+    data: [],
+  }
 }
 
-const INITIAL_STATE: State = {
+const INITIAL_STATE: TimeGPTStoreInitialState = {
   form: INITIAL_STATE_FORM,
-  result: null,
+  result: {
+    bodyData: [],
+    resultData: [],
+  }
 }
 
-export const useForecastStore = create<State & Actions>((set, get) => ({
+export const useForecastStore = create<TimeGPTStoreInitialState & TimeGPTStoreActions>((set, get) => ({
   form: INITIAL_STATE.form,
   result: INITIAL_STATE.result,
   sendTimeGPTMultiSeriesForm: async () => {
@@ -55,7 +48,6 @@ export const useForecastStore = create<State & Actions>((set, get) => ({
       const response = await fetch("/api/timegpt-multi-series", options);
       const data = await response.json()
 
-      console.log("sendTimeGPTMultiSeriesForm -> response: ", response);
       console.log("sendTimeGPTMultiSeriesForm -> data: ", data);
       set({ result: data })
     } catch (error) {
@@ -64,9 +56,8 @@ export const useForecastStore = create<State & Actions>((set, get) => ({
       set({ form: { ...get().form, loading: false } })
     }
   },
-  setResults: (result: State["result"]) => set({ result }),
   setPropertyForm: (
-    { key, value }: { key: keyof FormState, value: any }
+    { key, value }: { key: keyof TimeGPTStoreFormState, value: any }
   ) => set(state => ({
     form: {
       ...state.form,

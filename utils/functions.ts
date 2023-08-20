@@ -1,4 +1,4 @@
-import { ForecastYDataType } from "@/types/forecast";
+import { TimeGPTData, TimeGPTItem, TimeGPTYData } from "@/types/forecast";
 
 export const csvFileToYRequestBody = (file: File): Promise<any> => {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ export const csvFileToYRequestBody = (file: File): Promise<any> => {
           reject("CSV must have exactly three columns: unique_id, ds, y.");
           return;
         }
-        const data: ForecastYDataType = []
+        const data: TimeGPTYData[] = []
 
         lines.map(line => {
           let values = line.split(',');
@@ -63,3 +63,16 @@ export const csvFileToYRequestBody = (file: File): Promise<any> => {
   });
 };
 
+export const convertTimeGPTToGraphData = (timeGPTData: TimeGPTData): TimeGPTItem[] => {
+  const { columns, data } = timeGPTData;
+
+  return data.map((row) => {
+    let item: TimeGPTItem = {} as TimeGPTItem;
+
+    row.forEach((cell, index) => {
+      item[columns[index]] = cell;
+    });
+
+    return item;
+  });
+}

@@ -1,37 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId, useRef } from 'react';
 import Plot from 'react-plotly.js';
+import { TimeGPTPlotProps } from '@/types/forecast';
 
-interface DataItem {
-  unique_id: string;
-  ds: string;
-  y: number;
-}
-
-interface ForecastResultItem {
-  unique_id: string;
-  ds: string;
-  TimeGPT: number;
-  [key: string]: number | string;
-}
-
-interface TimeSeriesPlotProps {
-  data: DataItem[];
-  forecastResults: ForecastResultItem[];
-  horizon: number;
-  level: number;
-}
-
-const TimeSeriesPlot = ({ data, forecastResults, horizon, level }: TimeSeriesPlotProps) => {
-  const [selectedUid, setSelectedUid] = useState<string | null>(null);
+const TimeSeriesPlot = ({ selectedUid, data, forecastResults, horizon, level }: TimeGPTPlotProps) => {
   const [fig, setFig] = useState<any>({});
-  const uids = Array.from(new Set(data.map(d => d.unique_id)));
+  const plotId = useId()
+  const plotRef = useRef(null);
 
   useEffect(() => {
-    const currentUid = selectedUid || uids[0];
+    if (!data || !forecastResults) return;
 
     const inputSize = 7 * horizon;
-    const df = data.filter(d => d.unique_id === currentUid).slice(-inputSize);
-    const forecast_df = forecastResults.filter(d => d.unique_id === currentUid);
+    const df = data.filter(d => d.unique_id === selectedUid).slice(-inputSize);
+    const forecast_df = forecastResults.filter(d => d.unique_id === selectedUid);
 
     const traces = [
       {
@@ -61,7 +42,7 @@ const TimeSeriesPlot = ({ data, forecastResults, horizon, level }: TimeSeriesPlo
     setFig({
       data: traces,
       layout: {
-        title: 'Time Series ' + currentUid,
+        title: 'Time Series ' + selectedUid,
         xaxis: { title: 'Date' },
         yaxis: { title: 'Value' }
       }
@@ -70,10 +51,15 @@ const TimeSeriesPlot = ({ data, forecastResults, horizon, level }: TimeSeriesPlo
 
   return (
     <div>
-      <select value={selectedUid || ''} onChange={e => setSelectedUid(e.target.value)}>
-        {uids.map((uid, index) => <option key={index} value={uid}>{uid}</option>)}
-      </select>
-      <Plot data={fig.data} layout={fig.layout} />
+      <Plot
+        ref={plotRef}
+        key={selectedUid}
+        divId={selectedUid || ''}
+        data={fig.data}
+        layout={fig.layout}
+        config={{ displayModeBar: false }}
+        style={{ width: '100%', height: '100%' }}
+      />
     </div>
   );
 };

@@ -1,27 +1,48 @@
-export type ForecastYDataType = Array<Array<Date | number | string>>;
+// Base Types
+type TimeGPTUID = string;
+type TimeGPTDateString = string;
 
-export interface ForecastObjectType {
+export type TimeGPTYData = [TimeGPTDateString, TimeGPTDateString, number]
+
+export interface TimeGPTData {
   columns: string[];
-  data: ForecastYDataType;
+  data: TimeGPTYData[];
 }
 
-export interface ForecastResult {
-  forecast:  ForecastObjectType;
-  weights_x: number[];
+export interface TimeGPTRequestBody {
+  fh: number;
+  y: TimeGPTData;
+  freq: string;
+  clean_ex_first: boolean;
+  finetune_steps: number;
 }
 
-export interface FormState {
-  apiKey: string;
-  loading: boolean;
-  isSubmitting: boolean;
-  status: string;
-  isSuccess: boolean;
-  completed: boolean;
-  frecuency: string;
+export interface TimeGPTResponse {
+  data: {
+    forecast: TimeGPTData;
+  };
+  message: string;
+  details: string;
+  code: string;
+  requestID: TimeGPTUID;
+  support: string;
+}
+
+export interface TimeGPTItem {
+  unique_id: TimeGPTUID;
+  ds: TimeGPTDateString;
+  [key: string]: number | string
+}
+
+export interface TimeGPTPlotProps {
+  selectedUid: TimeGPTUID | null;
+  data: TimeGPTItem[] | null;
+  forecastResults: TimeGPTItem[] | null;
   horizon: number;
-  finetuneSteps: number;
-  predictionIntervals: number;
-  defaultCalendarVar: boolean;
-  countryHolidays: string[];
-  timeSeriesData: ForecastObjectType | null
+  level: number;
+}
+
+export interface TimeGPTGraphData {
+  bodyData: TimeGPTItem[]
+  resultData: TimeGPTItem[]
 }

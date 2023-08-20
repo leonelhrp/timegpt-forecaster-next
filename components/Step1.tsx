@@ -20,7 +20,6 @@ function Step1({
   const onDoneTimeSeriesFile = async (file: File) => {
     try {
       const transformedData = await csvFileToYRequestBody(file);
-      console.log('CSV data: ', transformedData);
 
       setPropertyForm({ key: 'timeSeriesData', value: transformedData })
     } catch (error) {
