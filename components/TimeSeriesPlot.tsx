@@ -4,7 +4,6 @@ import { TimeGPTPlotProps } from '@/types/forecast';
 
 const TimeSeriesPlot = ({ selectedUid, data, forecastResults, horizon, level }: TimeGPTPlotProps) => {
   const [fig, setFig] = useState<any>({});
-  const plotId = useId()
   const plotRef = useRef(null);
 
   useEffect(() => {

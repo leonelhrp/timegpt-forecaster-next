@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { UploadCSV } from '@/components/UploadCSV';
@@ -16,16 +16,26 @@ function Step1({
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }): React.JSX.Element {
   const { form, setPropertyForm } = useForecastStore();
+  const [error, setError] = useState<string | null>(null);
 
   const onDoneTimeSeriesFile = async (file: File) => {
     try {
       const transformedData = await csvFileToYRequestBody(file);
-
-      setPropertyForm({ key: 'timeSeriesData', value: transformedData })
+      setPropertyForm({ key: 'timeSeriesData', value: transformedData });
+      setError(null);
     } catch (error) {
-      console.error(error);
+      setPropertyForm({ key: 'timeSeriesData', value: { columns: [], data: [] } });
+
+      if (typeof error === 'string') {
+        setError(error);
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     }
   };
+
 
   const UploadCSVTimeSeriesProps = {
     onDone: onDoneTimeSeriesFile,
@@ -33,6 +43,8 @@ function Step1({
     subtitle: TIME_SERIES_UPLOAD_SUBTITLE,
     exampleLink: TIME_SERIES_UPLOAD_EXAMPLE_LINK
   }
+
+  const disabledButton = !form.timeSeriesData.columns.length || !form.timeSeriesData.data.length;
 
   return (
     <motion.div
@@ -55,6 +67,11 @@ function Step1({
       <div>
         <div className="mb-8">
           <UploadCSV {...UploadCSVTimeSeriesProps} />
+          {error && (
+            <div className="mt-1 text-red-600">
+              <p>{error}</p>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex gap-[15px] justify-end mt-8">
@@ -74,10 +91,13 @@ function Step1({
             onClick={() => {
               setStep(2);
             }}
-            className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] no-underline flex gap-x-2  active:scale-95 scale-100 duration-75"
+            className={`group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center ${!disabledButton ? 'bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247]' : 'bg-gray-400 text-white cursor-not-allowed'} no-underline flex gap-x-2  active:scale-95 scale-100 duration-75`}
             style={{
-              boxShadow: "0px 1px 4px rgba(13, 34, 71, 0.17), inset 0px 0px 0px 1px #061530, inset 0px 0px 0px 2px rgba(255, 255, 255, 0.1)",
+              boxShadow: !disabledButton
+                ? "0px 1px 4px rgba(13, 34, 71, 0.17), inset 0px 0px 0px 1px #061530, inset 0px 0px 0px 2px rgba(255, 255, 255, 0.1)"
+                : "none",
             }}
+            disabled={disabledButton}
           >
             <span> Continue </span>
             <Icon.ArrowRight size={20} />

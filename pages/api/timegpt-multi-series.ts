@@ -6,6 +6,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 const TIMEGPT_MOCK_DATA_ACTIVE = process.env.TIMEGPT_MOCK_DATA === 'true';
 
+export const config = {
+  api: {
+      bodyParser: {
+          sizeLimit: '200mb'
+      }
+  }
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     return res.status(405).end();

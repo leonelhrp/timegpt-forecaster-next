@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React, { useId, useState } from "react";
 import { useRouter } from 'next/navigation'
 import * as Icon from "@phosphor-icons/react";
 import { motion } from "framer-motion";
@@ -10,15 +10,33 @@ function Step3({
   setStep,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  }): React.JSX.Element {
+}): React.JSX.Element {
   const router = useRouter()
   const itemId = useId();
   const { form, setPropertyForm, sendTimeGPTMultiSeriesForm } = useForecastStore()
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleRunForecast = async () => {
-    await sendTimeGPTMultiSeriesForm()
-    router.push('/forecast-result');
+    setIsLoading(true);
+    try {
+      await sendTimeGPTMultiSeriesForm();
+      setError(null);
+      router.push('/forecast-result');
+    } catch (error) {
+      console.error("Error running forecast:", error);
+      if (typeof error === 'string') {
+        setError(error);
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   const handleDefaultCalendarVarChange = (value: string) => {
     setPropertyForm({ key: 'defaultCalendarVar', value: value === 'true' });
@@ -44,7 +62,7 @@ function Step3({
         Calendar variables
       </h2>
       <p className="text-[14px] leading-[20px] text-[#1a2b3b] font-normal my-4">
-      Select the appropriate calendar variables to consider for your forecast. This can include default variables and specific country holidays.
+        Select the appropriate calendar variables to consider for your forecast. This can include default variables and specific country holidays.
       </p>
       <div className="mt-8">
         <div className="flex flex-col gap-y-4">
@@ -83,6 +101,12 @@ function Step3({
                 </div>
               )}
             </div>
+
+            {error && (
+              <div className="mt-1 text-red-600">
+                <p>{error}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -102,15 +126,16 @@ function Step3({
         <div>
           <button
             onClick={handleRunForecast}
-            disabled={false}
-            className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] no-underline flex gap-x-2  active:scale-95 scale-100 duration-75"
+            className={`group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center ${!isLoading ? 'bg-[#1E2B3A] text-white hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247]' : 'bg-gray-400 text-white cursor-not-allowed'} no-underline flex gap-x-2  active:scale-95 scale-100 duration-75`}
             style={{
-              boxShadow:
-                "0px 1px 4px rgba(13, 34, 71, 0.17), inset 0px 0px 0px 1px #061530, inset 0px 0px 0px 2px rgba(255, 255, 255, 0.1)",
+              boxShadow: !isLoading
+                ? "0px 1px 4px rgba(13, 34, 71, 0.17), inset 0px 0px 0px 1px #061530, inset 0px 0px 0px 2px rgba(255, 255, 255, 0.1)"
+                : "none",
             }}
+            disabled={isLoading}
           >
             <span> Run Forecast </span>
-            <Icon.PersonSimpleRun size={20} />
+            {isLoading ? <Icon.Spinner size={20} className="animate-spin" /> : <Icon.PersonSimpleRun size={20} />}
           </button>
         </div>
       </div>
