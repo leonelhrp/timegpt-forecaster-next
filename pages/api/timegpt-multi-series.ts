@@ -8,9 +8,9 @@ const TIMEGPT_MOCK_DATA_ACTIVE = process.env.TIMEGPT_MOCK_DATA === 'true';
 
 export const config = {
   api: {
-      bodyParser: {
-          sizeLimit: '200mb'
-      }
+    bodyParser: {
+      sizeLimit: '200mb'
+    }
   }
 }
 
@@ -28,21 +28,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     || typeof formData.frecuency !== 'string'
     || typeof formData.defaultCalendarVar !== 'boolean'
     || typeof formData.finetuneSteps !== 'number'
+    || typeof formData.predictionIntervals !== 'number'
   ) {
     if (!TIMEGPT_MOCK_DATA_ACTIVE) {
       return res.status(400).json({ error: 'Invalid body format' });
     }
   }
 
+  console.log('formData: ', formData);
+
   const body: TimeGPTRequestBody = {
-    fh: formData.horizon,
-    y: {
+    "fh": formData.horizon,
+    "y": {
       columns: formData.timeSeriesData.columns,
       data: formData.timeSeriesData.data,
     },
-    freq: formData.frecuency,
-    clean_ex_first: formData.defaultCalendarVar,
-    finetune_steps: formData.finetuneSteps,
+    "freq": formData.frecuency,
+    "clean_ex_first": formData.defaultCalendarVar,
+    "finetune_steps": formData.finetuneSteps,
+    // "level": [formData.predictionIntervals]
   }
 
   try {
@@ -53,17 +57,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const options = {
       method: 'POST',
       headers: {
-        accept: 'application/json',
+        'accept': 'application/json',
         'content-type': 'application/json',
-        authorization: `Bearer ${TIMEGPT_API_KEY}` as string,
+        'authorization': `Bearer ${TIMEGPT_API_KEY}` as string,
       },
       body: TIMEGPT_MOCK_DATA_ACTIVE
         ? JSON.stringify(MOCK_TIMEGPT_MULTISERIES_REQUEST)
         : JSON.stringify(body)
     }
 
+    console.log('options: ', options);
+
     const response = await fetch(`${process.env.TIMEGPT_API_URL}/timegpt_multi_series`, options);
     const data: TimeGPTResponse = await response.json();
+
+    console.log('response', response);
+    console.log('data: ', data);
 
     if (!response.ok) {
       console.error(`Error with requestID: ${data.requestID}`);
@@ -80,10 +89,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json(timeGPTGraphData);
   } catch (error) {
+    console.error('error: ', error);
     if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ message: error.message });
     } else {
-      res.status(500).json({ error: 'An unexpected error occurred' });
+      res.status(500).json({ message: 'An unexpected error occurred' });
     }
   }
 };

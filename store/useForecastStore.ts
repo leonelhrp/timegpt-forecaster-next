@@ -48,7 +48,6 @@ export const useForecastStore = create<TimeGPTStoreInitialState & TimeGPTStoreAc
       const response = await fetch("/api/timegpt-multi-series", options);
       const data = await response.json()
 
-      console.log("sendTimeGPTMultiSeriesForm -> data: ", data);
       set({ result: data })
     } catch (error) {
       console.error("sendTimeGPTMultiSeriesForm -> error: ", error);

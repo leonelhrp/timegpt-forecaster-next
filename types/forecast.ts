@@ -15,6 +15,7 @@ export interface TimeGPTRequestBody {
   freq: string;
   clean_ex_first: boolean;
   finetune_steps: number;
+  level: number[]
 }
 
 export interface TimeGPTResponse {

@@ -7,9 +7,6 @@
   <h1 align="center">TimeGPT Forecaster</h1>
   <p align="center">
     Power your predictions with precision using Nixtla's TimeGPT Forecaster. The one-stop 🎯 solution for time series forecasting.
-    <br />
-    📊⏳📈
-    <br />
   </p>
 </p>
 

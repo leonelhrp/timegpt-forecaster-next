@@ -10,6 +10,12 @@ export default function Home() {
     <AnimatePresence>
       <div className="min-h-[100vh] sm:min-h-screen w-screen flex flex-col relative bg-[#F2F3F5] font-inter overflow-hidden">
         <main className="flex flex-col justify-center h-[90%] static md:fixed w-screen overflow-hidden grid-rows-[1fr_repeat(3,auto)_1fr] z-[100] pt-[30px] pb-[320px] px-4 md:px-20 md:py-0">
+          <img
+            src="/images/logo-timegpt-forecasting-app.png"
+            alt="TimeGPT Forecasting App Logo" className="self-center"
+            width={250}
+            height={250}
+          />
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
