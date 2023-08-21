@@ -92,7 +92,7 @@ export default function ForecastResultPage() {
             data={result.bodyData}
             forecastResults={result.resultData}
             horizon={form.horizon}
-            level={form.finetuneSteps}
+            level={form.predictionIntervals}
           />
         </div>
         <div>

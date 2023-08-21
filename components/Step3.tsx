@@ -66,7 +66,6 @@ function Step3({
       </p>
       <div className="mt-8">
         <div className="flex flex-col gap-y-4">
-
           <div className="flex gap-x-4">
             <div className="flex flex-col gap-y-2 w-1/2">
               <label className="block text-sm leading-5 font-medium text-gray-700">
@@ -101,16 +100,16 @@ function Step3({
                 </div>
               )}
             </div>
-
-            {error && (
-              <div className="mt-1 text-red-600">
-                <p>{error}</p>
-              </div>
-            )}
           </div>
-        </div>
 
+          {error && (
+            <div className="mt-1 text-red-600">
+              <p>{error}</p>
+            </div>
+          )}
+        </div>
       </div>
+
       <div className="flex gap-[15px] justify-end mt-8">
         <div>
           <button

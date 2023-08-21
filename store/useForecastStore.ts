@@ -3,7 +3,7 @@ import { create } from "zustand"
 
 const INITIAL_STATE_FORM: TimeGPTStoreFormState = {
   apiKey: "",
-  frecuency: "B",
+  frecuency: "MS",
   horizon: 11,
   finetuneSteps: 0,
   predictionIntervals: 90,
@@ -46,11 +46,27 @@ export const useForecastStore = create<TimeGPTStoreInitialState & TimeGPTStoreAc
       }
 
       const response = await fetch("/api/timegpt-multi-series", options);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
       const data = await response.json()
 
       set({ result: data })
     } catch (error) {
       console.error("sendTimeGPTMultiSeriesForm -> error: ", error);
+      let errorMessage = 'An unexpected error occurred.'
+
+      if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      set({ form: { ...get().form, status: errorMessage } })
+
+      throw new Error(errorMessage)
     } finally {
       set({ form: { ...get().form, loading: false } })
     }

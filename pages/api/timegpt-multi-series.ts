@@ -46,7 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "freq": formData.frecuency,
     "clean_ex_first": formData.defaultCalendarVar,
     "finetune_steps": formData.finetuneSteps,
-    // "level": [formData.predictionIntervals]
+    "level": [formData.predictionIntervals]
   }
 
   try {
@@ -66,17 +66,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         : JSON.stringify(body)
     }
 
-    console.log('options: ', options);
-
     const response = await fetch(`${process.env.TIMEGPT_API_URL}/timegpt_multi_series`, options);
     const data: TimeGPTResponse = await response.json();
 
-    console.log('response', response);
-    console.log('data: ', data);
-
     if (!response.ok) {
-      console.error(`Error with requestID: ${data.requestID}`);
-      throw new Error(data.details);
+      throw new Error(data.message || 'Error from server');
     }
 
     const bodyData = convertTimeGPTToGraphData(body.y);
