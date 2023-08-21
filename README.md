@@ -11,9 +11,7 @@
 </p>
 
 ## Demo
-
-[Watch the video]([https://github.com/leonelhrp/gpt-time-nixtla/assets/[URL]](https://github.com/leonelhrp/timegpt-forecaster-next/assets/5928864/623e0c81-da44-42a4-b331-fcd6762d26dd
-))
+[Watch the video](https://github.com/leonelhrp/timegpt-forecaster-next/assets/5928864/623e0c81-da44-42a4-b331-fcd6762d26dd)
 
 ## Live App
 
