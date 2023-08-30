@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/react';
+import localFont from '@next/font/local'
 import "../styles/globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -27,14 +28,24 @@ export const metadata: Metadata = {
   },
 };
 
+const nunito = localFont({
+  src: [
+    {
+      path: '../public/fonts/Nunito-Variable.ttf',
+      weight: '400'
+    },
+  ],
+  variable: '--font-nunito'
+})
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="scroll-smooth antialiased [font-feature-settings:'ss01']">
+    <html lang="en" className={`${nunito.variable} font-sans`}>
+      <body className="scroll-smooth antialiased">
         <div className="flex w-full">
           <div className="relative flex w-full flex-col">
             <Header />

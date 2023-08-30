@@ -8,7 +8,7 @@ export function Header() {
         <Link
           href="/"
         >
-          <Logo className="w-2/12 pb-2"/>
+          <Logo className="h-6 w-auto pb-2"/>
         </Link>
       </div>
     </header>

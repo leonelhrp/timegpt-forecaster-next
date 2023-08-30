@@ -15,6 +15,7 @@ const LinearChartMotion = () => {
       }}
       data-transition-in
       id="gradient-canvas"
+      className="absolute xl:relative w-auto"
     >
 
       <motion.path
