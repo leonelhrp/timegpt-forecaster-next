@@ -1,17 +1,14 @@
-// Base Types
-type TimeGPTUID = string;
-type TimeGPTDateString = string;
+export type TimeGPTItem = (string | number)[]
 
-export type TimeGPTYData = [TimeGPTDateString, TimeGPTDateString, number]
-
-export interface TimeGPTData {
+export interface TimeGPTDataFrame {
   columns: string[];
-  data: TimeGPTYData[];
+  data: TimeGPTItem[];
 }
 
 export interface TimeGPTRequestBody {
   fh: number;
-  y: TimeGPTData;
+  y: TimeGPTDataFrame;
+  x: TimeGPTDataFrame | null;
   freq: string;
   clean_ex_first: boolean;
   finetune_steps: number;
@@ -20,30 +17,35 @@ export interface TimeGPTRequestBody {
 
 export interface TimeGPTResponse {
   data: {
-    forecast: TimeGPTData;
+    forecast: TimeGPTDataFrame;
   };
   message: string;
   details: string;
   code: string;
-  requestID: TimeGPTUID;
+  requestID: string;
   support: string;
 }
 
-export interface TimeGPTItem {
-  unique_id: TimeGPTUID;
-  ds: TimeGPTDateString;
-  [key: string]: number | string
+export type TimeGPTPlotItem = {
+  [key: string]: string | number;
 }
 
 export interface TimeGPTPlotProps {
-  selectedUid: TimeGPTUID | null;
-  data: TimeGPTItem[] | null;
-  forecastResults: TimeGPTItem[] | null;
+  selectedUid: string | null;
+  data: TimeGPTPlotItem[] | null;
+  forecastResults: TimeGPTPlotItem[] | null;
   horizon: number;
   level: number;
 }
 
 export interface TimeGPTGraphData {
-  bodyData: TimeGPTItem[]
-  resultData: TimeGPTItem[]
+  bodyData: TimeGPTPlotItem[]
+  resultData: TimeGPTPlotItem[]
+}
+
+export interface TimeGPTImportanceExogenousVarsProps {
+  weightsData: {
+    features: string[];
+    weights: number[];
+  };
 }

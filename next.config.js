@@ -18,6 +18,9 @@ const nextConfig = {
       },
     ];
   },
+  env: {
+    TIMEGPT_MOCK_DATA: process.env.TIMEGPT_MOCK_DATA,
+  }
 };
 
 module.exports = nextConfig;

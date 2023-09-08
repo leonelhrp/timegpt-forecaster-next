@@ -1,22 +1,21 @@
-import { TimeGPTGraphData, TimeGPTResponse, TimeGPTYData } from "./forecast"
+import { TimeGPTDataFrame, TimeGPTGraphData } from "./forecast"
 
 export interface TimeGPTStoreFormState {
   apiKey: string;
+  frecuency: string;
+  horizon: number;
+  finetuneSteps: number;
+  predictionIntervals: number;
   loading: boolean;
   isSubmitting: boolean;
   status: string;
   isSuccess: boolean;
   completed: boolean;
-  frecuency: string;
-  horizon: number;
-  finetuneSteps: number;
-  predictionIntervals: number;
   defaultCalendarVar: boolean;
   countryHolidays: string[];
-  timeSeriesData: {
-    columns: string[];
-    data: TimeGPTYData[];
-  };
+  timeSeriesData: TimeGPTDataFrame;
+  haveExogenousData: boolean;
+  exogenousData: TimeGPTDataFrame | null
 }
 
 export interface TimeGPTStoreInitialState {

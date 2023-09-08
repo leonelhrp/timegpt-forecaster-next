@@ -39,10 +39,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const body: TimeGPTRequestBody = {
     "fh": formData.horizon,
-    "y": {
-      columns: formData.timeSeriesData.columns,
-      data: formData.timeSeriesData.data,
-    },
+    "y": formData.timeSeriesData,
+    "x": formData.haveExogenousData ? formData.exogenousData : null,
     "freq": formData.frecuency,
     "clean_ex_first": formData.defaultCalendarVar,
     "finetune_steps": formData.finetuneSteps,

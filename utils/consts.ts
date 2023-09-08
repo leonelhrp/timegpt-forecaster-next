@@ -1,6 +1,9 @@
 export const TIME_SERIES_UPLOAD_TITLE = 'Upload your time series data (CSV format)';
 export const TIME_SERIES_UPLOAD_SUBTITLE = 'Download Target Example Data';
 export const TIME_SERIES_UPLOAD_EXAMPLE_LINK = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity.csv';
+export const EXOGENOUS_UPLOAD_TITLE = 'Upload your exogenous data (CSV format)';
+export const EXOGENOUS_UPLOAD_SUBTITLE = 'Download Exogenous Variables Example Data';
+export const EXOGENOUS_UPLOAD_EXAMPLE_LINK = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/exogenous-vars-electricity.csv';
 
 export const FRECUENCIES = [
   { key: "B", value: "business day frequency" },

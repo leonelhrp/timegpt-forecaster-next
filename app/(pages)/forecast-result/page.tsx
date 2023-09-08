@@ -6,8 +6,20 @@ import { useRouter } from 'next/navigation'
 import { useForecastStore } from '@/store/useForecastStore';
 import { Select, SelectItem } from "@tremor/react";
 import * as Icon from "@phosphor-icons/react";
+import { MOCK_INPUT_SIZE, MOCK_WEIGHTS_DATA, MOCK_X_DF } from '@/utils/mock';
+
 
 const TimeSeriesPlot = dynamic(() => import("@/components/TimeSeriesPlot"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false
+})
+
+const ImportanceExogenousVariables = dynamic(() => import("@/components/ImportanceExogenousVariables"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false
+})
+
+const PlotExogenousVariables = dynamic(() => import("@/components/PlotExogenousVariables"), {
   loading: () => <p>Loading...</p>,
   ssr: false
 })
@@ -60,6 +72,7 @@ export default function ForecastResultPage() {
       setSelectedUid(uids[0])
     }
   }, [])
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#FCFCFC] p-4">
       <div className="flex flex-col w-full md:w-2/3 lg:w-3/4 bg-white p-8 rounded-xl shadow-lg space-y-6">
@@ -94,6 +107,12 @@ export default function ForecastResultPage() {
             horizon={form.horizon}
             level={form.predictionIntervals}
           />
+        </div>
+        <div className="min-h-[400px]">
+          <ImportanceExogenousVariables weightsData={MOCK_WEIGHTS_DATA} />
+        </div>
+        <div className="min-h-[400px]">
+          <PlotExogenousVariables df={result.bodyData} xDf={MOCK_X_DF} inputSize={MOCK_INPUT_SIZE} selectedUid={selectedUid || ''} />
         </div>
         <div>
           <button

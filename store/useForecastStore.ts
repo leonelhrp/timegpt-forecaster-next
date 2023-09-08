@@ -1,5 +1,8 @@
 import { TimeGPTStoreActions, TimeGPTStoreFormState, TimeGPTStoreInitialState } from "@/types/store"
+import { MOCK_TIMEGPT_MULTISERIES_FORM_STATE, MOCK_TIMEGPT_MULTISERIES_RESULT_STATE } from "@/utils/mock";
 import { create } from "zustand"
+
+const TIMEGPT_MOCK_DATA_ACTIVE = process.env.TIMEGPT_MOCK_DATA === 'true';
 
 const INITIAL_STATE_FORM: TimeGPTStoreFormState = {
   apiKey: "",
@@ -17,12 +20,14 @@ const INITIAL_STATE_FORM: TimeGPTStoreFormState = {
   timeSeriesData: {
     columns: [],
     data: [],
-  }
+  },
+  haveExogenousData: false,
+  exogenousData: null,
 }
 
 const INITIAL_STATE: TimeGPTStoreInitialState = {
-  form: INITIAL_STATE_FORM,
-  result: {
+  form: TIMEGPT_MOCK_DATA_ACTIVE ? MOCK_TIMEGPT_MULTISERIES_FORM_STATE : INITIAL_STATE_FORM,
+  result: TIMEGPT_MOCK_DATA_ACTIVE ? MOCK_TIMEGPT_MULTISERIES_RESULT_STATE : {
     bodyData: [],
     resultData: [],
   }

@@ -1,6 +1,6 @@
-import { TimeGPTData, TimeGPTItem, TimeGPTYData } from "@/types/forecast";
+import { TimeGPTDataFrame, TimeGPTItem, TimeGPTPlotItem } from "@/types/forecast";
 
-export const csvFileToYRequestBody = (file: File): Promise<any> => {
+export const csvFileToColumsAndDataRequestBody = (file: File): Promise<any> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -20,34 +20,30 @@ export const csvFileToYRequestBody = (file: File): Promise<any> => {
           reject("CSV must have exactly three columns: unique_id, ds, y.");
           return;
         }
-        const data: TimeGPTYData[] = []
 
-        lines.map(line => {
-          let values = line.split(',');
+        const parsedLines = lines.map(line => {
+          const values = line.split(',');
 
           if (values.length !== 3) {
             reject(`Invalid line: ${line}. Each line must have exactly three columns.`);
             return;
           }
 
-          const obj: { [key: string]: any } = {};
-          headers.forEach((header, index) => {
-            obj[header.trim()] = values[index]?.trim();
-          });
+          const uniqueId: string = values[0]?.trim();
+          const ds: string = values[1]?.trim();
+          const y: number = Number(values[2]?.trim());
 
-          if (!obj.y || isNaN(Number(obj.y))) {
-            reject(`Invalid format for 'y' value: ${obj.y}. It must be numeric.`);
+          if (isNaN(y)) {
+            reject(`Invalid format for 'y' value: ${values[2]}. It must be numeric.`);
             return;
           }
 
-          data.push([obj.unique_id, obj.ds, Number(obj.y)]);
-
-          return obj;
+          return [uniqueId, ds, y];
         });
 
         resolve({
           columns: headers,
-          data,
+          data: parsedLines
         });
 
       } catch (error) {
@@ -63,16 +59,41 @@ export const csvFileToYRequestBody = (file: File): Promise<any> => {
   });
 };
 
-export const convertTimeGPTToGraphData = (timeGPTData: TimeGPTData): TimeGPTItem[] => {
+export const convertTimeGPTToGraphData = (timeGPTData: TimeGPTDataFrame): TimeGPTPlotItem[] => {
   const { columns, data } = timeGPTData;
 
-  return data.map((row) => {
-    let item: TimeGPTItem = {} as TimeGPTItem;
-
-    row.forEach((cell, index) => {
-      item[columns[index]] = cell;
+  const graphData = data.map((row: TimeGPTItem) => {
+    const item: TimeGPTPlotItem = {};
+    columns.forEach((col, index) => {
+      item[col] = row[index];
     });
-
     return item;
   });
+
+  return graphData;
 }
+
+
+export const getColorSequence = (colorSteps: number): string[] => {
+  const colorSequence = Array.from({ length: colorSteps }, (_, i) => {
+    const r = Math.floor(255 * (i / colorSteps));
+    const b = 255 - r;
+    return `rgb(${r}, 0, ${b})`;
+  });
+
+  return colorSequence;
+}
+
+export const formatDate = (inputDate: string): string => {
+  const months: string[] = [
+    'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+  ];
+
+  const date = new Date(inputDate);
+  const monthName = months[date.getMonth()];
+  const day = date.getDate();
+
+  return `${monthName} ${day}`;
+}
+

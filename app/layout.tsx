@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/react';
-import localFont from '@next/font/local'
 import "../styles/globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { nunito } from "@/fonts";
 
 export const metadata: Metadata = {
   title: {
@@ -28,15 +28,6 @@ export const metadata: Metadata = {
   },
 };
 
-const nunito = localFont({
-  src: [
-    {
-      path: '../public/fonts/Nunito-Variable.ttf',
-      weight: '400'
-    },
-  ],
-  variable: '--font-nunito'
-})
 
 export default async function RootLayout({
   children,
