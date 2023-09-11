@@ -1,4 +1,4 @@
-import { TimeGPTDataFrame, TimeGPTGraphData } from "./forecast"
+import { TimeGPTDataFrame, TimeGPTGraphData } from "@/types/forecast"
 
 export interface TimeGPTStoreFormState {
   apiKey: string;

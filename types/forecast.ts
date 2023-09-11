@@ -26,8 +26,12 @@ export interface TimeGPTResponse {
   support: string;
 }
 
+export interface TimeGPTPlotCountryHolidays {
+  [key: string]: boolean;
+}
+
 export type TimeGPTPlotItem = {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean | TimeGPTPlotCountryHolidays;
 }
 
 export interface TimeGPTPlotProps {

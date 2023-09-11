@@ -12,7 +12,7 @@ import {
   EXOGENOUS_UPLOAD_EXAMPLE_LINK,
 } from "@/utils/consts";
 import { useForecastStore } from "@/store/useForecastStore";
-import { csvFileToColumsAndDataRequestBody } from "@/utils/functions";
+import { csvFileToColumnsAndDataRequestBody } from "@/utils/functions";
 
 function Step1({
   setStep
@@ -25,7 +25,7 @@ function Step1({
 
   const onDoneTimeSeriesFile = async (file: File) => {
     try {
-      const transformedData = await csvFileToColumsAndDataRequestBody(file);
+      const transformedData = await csvFileToColumnsAndDataRequestBody({ file, type: 'y' });
       setPropertyForm({ key: 'timeSeriesData', value: transformedData });
       setTimeSeriesCSVError(null);
     } catch (error) {
@@ -43,7 +43,7 @@ function Step1({
 
   const onDoneExogenousFile = async (file: File) => {
     try {
-      const transformedData = await csvFileToColumsAndDataRequestBody(file);
+      const transformedData = await csvFileToColumnsAndDataRequestBody({ file, type: 'x' });
       setPropertyForm({ key: 'exogenousData', value: transformedData });
       setExogenousCSVError(null);
     } catch (error) {

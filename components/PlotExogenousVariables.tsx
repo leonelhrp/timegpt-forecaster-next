@@ -1,4 +1,4 @@
-import { formatDate, getColorSequence } from "@/utils/functions";
+import { getColorSequence } from "@/utils/functions";
 import { useRef, useState, useEffect } from "react";
 import Plot from 'react-plotly.js';
 

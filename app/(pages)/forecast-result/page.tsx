@@ -7,7 +7,7 @@ import { useForecastStore } from '@/store/useForecastStore';
 import { Select, SelectItem } from "@tremor/react";
 import * as Icon from "@phosphor-icons/react";
 import { MOCK_INPUT_SIZE, MOCK_WEIGHTS_DATA, MOCK_X_DF } from '@/utils/mock';
-
+import { downloadCSV } from '@/utils/functions';
 
 const TimeSeriesPlot = dynamic(() => import("@/components/TimeSeriesPlot"), {
   loading: () => <p>Loading...</p>,
@@ -30,34 +30,6 @@ export default function ForecastResultPage() {
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
   const uids = Array.from(new Set(result.bodyData.map(d => d.unique_id)));
 
-  function handleCSVDownload(): void {
-    if (!result.resultData || result.resultData.length === 0) {
-      alert("No data available to download.");
-      return;
-    }
-
-    // Convert JSON data to CSV data
-    const jsonObject = result.resultData;
-    const replacer = (key: string, value: any) => value === null ? '' : value;
-    const header = Object.keys(jsonObject[0]);
-
-    let csvRows: string[] = jsonObject.map(row =>
-      header.map(fieldName => JSON.stringify((row as any)[fieldName], replacer)).join(',')
-    );
-
-    csvRows.unshift(header.join(','));
-    const csv: string = csvRows.join('\r\n');
-
-    // Create a temporary download link and click it
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'forecast-timegpt.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   const handleTryAgain = () => {
     router.push('/run-forecast');
   }
@@ -69,7 +41,7 @@ export default function ForecastResultPage() {
     }
 
     if (uids.length > 0) {
-      setSelectedUid(uids[0])
+      setSelectedUid(String(uids[0]))
     }
   }, [])
 
@@ -83,12 +55,12 @@ export default function ForecastResultPage() {
             <label className="block text-sm font-bold mb-2">Select a unique_id to view</label>
             <Select value={selectedUid || ''} onValueChange={setSelectedUid}>
               {uids.map((uid, index) => (
-                <SelectItem key={index} value={uid}>{uid}</SelectItem>
+                <SelectItem key={index} value={String(uid)}>{uid}</SelectItem>
               ))}
             </Select>
           </div>
           <button
-            onClick={handleCSVDownload}
+            onClick={() => downloadCSV(result)}
             className="group rounded-full px-4 py-2 text-[13px] font-semibold transition-all flex items-center justify-center bg-[#f5f7f9] text-[#1E2B3A] no-underline active:scale-95 scale-100 duration-75 gap-x-2 mt-7"
             style={{
               boxShadow: "0 1px 1px #0c192714, 0 1px 3px #0c192724",
@@ -112,7 +84,12 @@ export default function ForecastResultPage() {
           <ImportanceExogenousVariables weightsData={MOCK_WEIGHTS_DATA} />
         </div>
         <div className="min-h-[400px]">
-          <PlotExogenousVariables df={result.bodyData} xDf={MOCK_X_DF} inputSize={MOCK_INPUT_SIZE} selectedUid={selectedUid || ''} />
+          <PlotExogenousVariables
+            df={result.bodyData}
+            xDf={MOCK_X_DF}
+            inputSize={MOCK_INPUT_SIZE}
+            selectedUid={selectedUid || ''}
+          />
         </div>
         <div>
           <button

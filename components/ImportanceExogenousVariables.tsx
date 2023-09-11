@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Plot from 'react-plotly.js';
 import { TimeGPTImportanceExogenousVarsProps } from '@/types/forecast';
-import FeatureWeightsTable from './FeatureWeightsTable';
+import FeatureWeightsTable from '@/components/FeatureWeightsTable';
 
 const ImportanceExogenousVariables = ({ weightsData }: TimeGPTImportanceExogenousVarsProps) => {
   const [fig, setFig] = useState<any>({});
