@@ -10,17 +10,17 @@ import { MOCK_INPUT_SIZE, MOCK_WEIGHTS_DATA, MOCK_X_DF } from '@/utils/mock';
 import { downloadCSV } from '@/utils/functions';
 
 const TimeSeriesPlot = dynamic(() => import("@/components/TimeSeriesPlot"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <p>Loading Time Series Plot...</p>,
   ssr: false
 })
 
 const ImportanceExogenousVariables = dynamic(() => import("@/components/ImportanceExogenousVariables"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <p>Loading Importance Exogenous Plot...</p>,
   ssr: false
 })
 
 const PlotExogenousVariables = dynamic(() => import("@/components/PlotExogenousVariables"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <p>Loading Exogenous Sub Plots...</p>,
   ssr: false
 })
 
@@ -28,7 +28,7 @@ export default function ForecastResultPage() {
   const router = useRouter()
   const { form, result } = useForecastStore()
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
-  const uids = Array.from(new Set(result.bodyData.map(d => d.unique_id)));
+  const uids = Array.from(new Set(result.bodyData.map(d => String(d.unique_id))));
 
   const handleTryAgain = () => {
     router.push('/run-forecast');
@@ -41,7 +41,7 @@ export default function ForecastResultPage() {
     }
 
     if (uids.length > 0) {
-      setSelectedUid(String(uids[0]))
+      setSelectedUid(uids[0])
     }
   }, [])
 
@@ -55,7 +55,7 @@ export default function ForecastResultPage() {
             <label className="block text-sm font-bold mb-2">Select a unique_id to view</label>
             <Select value={selectedUid || ''} onValueChange={setSelectedUid}>
               {uids.map((uid, index) => (
-                <SelectItem key={index} value={String(uid)}>{uid}</SelectItem>
+                <SelectItem key={index} value={String(uid)}>{String(uid)}</SelectItem>
               ))}
             </Select>
           </div>

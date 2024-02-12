@@ -26,6 +26,15 @@ export interface TimeGPTResponse {
   support: string;
 }
 
+export interface TimeGPTInputSizeResponse {
+  data: number;
+  message: string;
+  details: string;
+  code: string;
+  requestID: string;
+  support: string;
+}
+
 export interface TimeGPTPlotCountryHolidays {
   [key: string]: boolean;
 }

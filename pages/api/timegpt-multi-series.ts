@@ -1,7 +1,7 @@
-import { TimeGPTRequestBody, TimeGPTResponse } from '@/types/forecast';
+import { TimeGPTInputSizeResponse, TimeGPTRequestBody, TimeGPTResponse } from '@/types/forecast';
 import { TimeGPTStoreFormState } from '@/types/store';
 import { convertTimeGPTToGraphData } from '@/utils/functions';
-import { MOCK_TIMEGPT_MULTISERIES_REQUEST } from '@/utils/mock';
+import { MOCK_TIMEGPT_INPUT_SIZE_REQUEST, MOCK_TIMEGPT_MULTISERIES_REQUEST } from '@/utils/mock';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const TIMEGPT_MOCK_DATA_ACTIVE = process.env.TIMEGPT_MOCK_DATA === 'true';
@@ -35,7 +35,43 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  console.log('formData: ', formData);
+  const TIMEGPT_API_KEY = TIMEGPT_MOCK_DATA_ACTIVE
+      ? process.env.TIMEGPT_API_KEY
+    : req.headers.authorization
+
+  const headers = {
+    'accept': 'application/json',
+    'content-type': 'application/json',
+    'authorization': `Bearer ${TIMEGPT_API_KEY}` as string,
+  }
+
+  let inputSize: number = 0;
+
+  try {
+    const options = {
+      method: 'POST',
+      headers,
+      body: TIMEGPT_MOCK_DATA_ACTIVE
+        ? JSON.stringify(MOCK_TIMEGPT_INPUT_SIZE_REQUEST)
+        : JSON.stringify({ freq: formData.frecuency })
+    }
+
+    const response = await fetch(`${process.env.TIMEGPT_API_URL}/timegpt_input_size`, options);
+    const data: TimeGPTInputSizeResponse = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Error from server');
+    }
+
+    inputSize = data.data;
+  } catch (error) {
+    console.error('error: ', error);
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'An unexpected error occurred' });
+    }
+  }
 
   const body: TimeGPTRequestBody = {
     "fh": formData.horizon,
@@ -48,17 +84,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const TIMEGPT_API_KEY = TIMEGPT_MOCK_DATA_ACTIVE
-      ? process.env.TIMEGPT_API_KEY
-      : req.headers.authorization
-
     const options = {
       method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'authorization': `Bearer ${TIMEGPT_API_KEY}` as string,
-      },
+      headers,
       body: TIMEGPT_MOCK_DATA_ACTIVE
         ? JSON.stringify(MOCK_TIMEGPT_MULTISERIES_REQUEST)
         : JSON.stringify(body)

@@ -2862,3 +2862,12 @@ export const MOCK_WEIGHTS_DATA = {
 };
 
 export const MOCK_INPUT_SIZE = 168;
+export const MOCK_TIMEGPT_INPUT_SIZE_REQUEST = { freq: "D" };
+export const MOCK_TIMEGPT_INPUT_SIZE_RESPONSE = {
+  data: 28,
+  message: 'success',
+  details: 'request successful',
+  code: 'B10',
+  requestID: 'SDBAJT8DLE',
+  support: 'If you have questions or need support, please email ops@nixtla.io'
+}
